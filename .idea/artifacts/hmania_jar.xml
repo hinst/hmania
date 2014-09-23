@@ -4,6 +4,7 @@
     <root id="archive" name="hmania.jar">
       <element id="module-output" name="hmania" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/kotlin-runtime.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/joda-time-2.4.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

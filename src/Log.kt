@@ -1,5 +1,5 @@
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.util.Date
+import java.text.SimpleDateFormat
 
 // Dumb Log
 object Log {
@@ -21,7 +21,7 @@ object Log {
 			else
 				""
 		val threadID = Thread.currentThread().getId().toString()
-		println(" # ${threadID} ${moment} ${className}: ${text}")
+		println(" ~${threadID} ${moment} ${className}: ${text}")
 	}
 
 }

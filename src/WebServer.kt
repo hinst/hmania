@@ -5,7 +5,7 @@ import org.joda.time.Period
 
 class WebServer(val settings: WebServerSettings): HttpHandler {
 
-	val logRequestProcessedEnabled = true;
+	val logRequestProcessedEnabled = true
 
 	public fun run() {
 		runServer()

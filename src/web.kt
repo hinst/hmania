@@ -1,5 +1,4 @@
 import com.sun.net.httpserver.*
-import java.io.OutputStream
 import java.util.HashMap
 
 val ContentTypeHttpHeaderKey = "Content-Type"
