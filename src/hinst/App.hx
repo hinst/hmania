@@ -4,6 +4,7 @@ import haxe.Int64;
 import js.node.http.Server;
 import js.node.Http;
 import js.node.http.ServerResponse;
+import js.npm.Mongoose;
 
 class App
 {
