@@ -9,6 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
     <orderEntry type="library" name="Joda-Time" level="project" />
+    <orderEntry type="library" name="H2" level="project" />
+    <orderEntry type="library" name="json-simple" level="project" />
   </component>
 </module>
 

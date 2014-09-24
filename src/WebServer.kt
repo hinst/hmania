@@ -4,18 +4,26 @@ import org.joda.time.DateTime
 import org.joda.time.Period
 
 class WebServer(val settings: WebServerSettings): HttpHandler {
-
-	val logRequestProcessedEnabled = true
-
-	public fun run() {
-		runServer()
+	val dataMaster: DataMaster
+	{
+		val settings = DataBaseSettings()
+		settings.loadFromJsonFile(DataBaseSettings.defaultFilePath)
+		Log.emit("DB settings are: " + settings.toString())
+		dataMaster = DataMaster(settings)
+	}
+	val server: HttpServer
+	{
+		Log.emit("Now creating HTTP server; port = ${settings.port}...")
+		server = HttpServer.create(InetSocketAddress(settings.port), 1)!!
+		server.createContext("/hmania", this)
+		server.setExecutor(null)
 	}
 
-	fun runServer() {
-		Log.emit("Now creating HTTP server; port = ${settings.port}")
-		val server = HttpServer.create(InetSocketAddress(settings.port), 1)
-		server!!.createContext("/hmania", this)
-		server.setExecutor(null)
+	val logRequestProcessedEnabled = true
+	val testResponseText = "Проверка"
+
+	public fun startServer() {
+		Log.emit("Now starting HTTP server...")
 		server.start()
 	}
 
@@ -42,6 +50,5 @@ class WebServer(val settings: WebServerSettings): HttpHandler {
 		exchange.respond(response.toString())
 	}
 
-	val testResponseText = "Проверка"
 
 }
