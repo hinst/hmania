@@ -7,6 +7,7 @@ class DataMaster(val dataBaseSettings: DataBaseSettings) {
 	}
 
 	fun createDataSource(): ConnectionPoolDataSource {
+		Log.emit("Now creating data source...")
 		val dataSource = JdbcDataSource()
 		dataSource.setURL(dataBaseSettings.address)
 		dataSource.setUser(dataBaseSettings.user)

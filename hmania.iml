@@ -11,6 +11,7 @@
     <orderEntry type="library" name="Joda-Time" level="project" />
     <orderEntry type="library" name="H2" level="project" />
     <orderEntry type="library" name="json-simple" level="project" />
+    <orderEntry type="library" name="ST-4.0.8" level="project" />
   </component>
 </module>
 
