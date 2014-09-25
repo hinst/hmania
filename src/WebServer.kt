@@ -10,6 +10,7 @@ class WebServer(val settings: WebServerSettings): HttpHandler {
 		settings.loadFromJsonFile(DataBaseSettings.defaultFilePath)
 		Log.emit("DB settings are: " + settings.toString())
 		dataMaster = DataMaster(settings)
+		dataMaster.prepareDB()
 	}
 	val server: HttpServer
 	{

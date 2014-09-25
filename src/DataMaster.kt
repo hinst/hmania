@@ -2,12 +2,8 @@ import javax.sql.*
 import org.h2.jdbcx.JdbcDataSource
 
 class DataMaster(val dataBaseSettings: DataBaseSettings) {
-	{
-		prepareDB()
-	}
 
 	fun createDataSource(): ConnectionPoolDataSource {
-		Log.emit("Now creating data source...")
 		val dataSource = JdbcDataSource()
 		dataSource.setURL(dataBaseSettings.address)
 		dataSource.setUser(dataBaseSettings.user)
@@ -17,16 +13,13 @@ class DataMaster(val dataBaseSettings: DataBaseSettings) {
 
 	val dataSource: ConnectionPoolDataSource = createDataSource()
 
-	val ensureUsersTableStatement = "CREATE TABLE IF NOT EXISTS users(name TEXT, password TEXT);"
-
-	fun ensureUsersTable() {
-		val connection = dataSource.getPooledConnection()!!.getConnection()!!
-		val statement = connection.createStatement()!!
-		statement.executeUpdate(ensureUsersTableStatement)
-	}
-
-	fun prepareDB() {
-		ensureUsersTable()
+	fun obtainConnection(): java.sql.Connection? {
+		var connection = dataSource.getPooledConnection()
+		while (null == connection) {
+			connection = dataSource.getPooledConnection()
+			Thread.sleep(1000)
+		}
+		return connection?.getConnection();
 	}
 
 }
