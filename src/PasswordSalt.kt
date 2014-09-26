@@ -7,8 +7,8 @@ object PasswordSalt {
 	var salt: ByteArray = ByteArray(saltSize)
 
 	fun generate(): ByteArray {
-		val result = ByteArray(saltSize)
 		random.nextBytes(salt)
+		val result = ByteArray(saltSize)
 		System.arraycopy(salt, 0, result, 0, salt.size)
 		return result
 	}
