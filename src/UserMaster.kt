@@ -15,6 +15,11 @@ class UserMaster(val dataMaster: DataMaster) {
 		val connection = dataMaster.obtainConnection()!!
 		val statement = connection.createStatement()!!
 		statement.executeUpdate(ensureUsersTableStatement)
+		connection.close()
+	}
+
+	fun ensureAdminUser() {
+
 	}
 
 }

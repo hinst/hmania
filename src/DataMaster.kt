@@ -1,25 +1,25 @@
 import javax.sql.*
 import org.h2.jdbcx.JdbcDataSource
+import java.io.PrintWriter
 
 class DataMaster(val dataBaseSettings: DataBaseSettings) {
 
-	fun createDataSource(): ConnectionPoolDataSource {
+	fun createDataSource(): DataSource {
 		val dataSource = JdbcDataSource()
 		dataSource.setURL(dataBaseSettings.address)
 		dataSource.setUser(dataBaseSettings.user)
 		dataSource.setPassword(dataBaseSettings.password)
+		dataSource.setLogWriter(
+			PrintWriter(System.out)
+		)
 		return dataSource
 	}
 
-	val dataSource: ConnectionPoolDataSource = createDataSource()
+	val dataSource: DataSource = createDataSource()
 
 	fun obtainConnection(): java.sql.Connection? {
-		var connection = dataSource.getPooledConnection()
-		while (null == connection) {
-			connection = dataSource.getPooledConnection()
-			Thread.sleep(1000)
-		}
-		return connection?.getConnection();
+		var connection = dataSource.getConnection()
+		return connection
 	}
 
 }

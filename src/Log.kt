@@ -20,7 +20,7 @@ object Log {
 				stack[2].getClassName()
 			else
 				""
-		val threadID = Thread.currentThread().getId().toString()
+		val threadID = Thread.currentThread().getId()
 		println(" ~${threadID} ${moment} ${className}: ${text}")
 	}
 
