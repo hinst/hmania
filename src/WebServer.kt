@@ -3,14 +3,17 @@ import java.net.InetSocketAddress
 import org.joda.time.DateTime
 import org.joda.time.Period
 
-class WebServer(val settings: WebServerSettings): HttpHandler {
+class WebServer(val settings: WebServerSettings) : HttpHandler {
 	val dataMaster: DataMaster
 	{
 		val settings = DataBaseSettings()
 		settings.loadFromJsonFile(DataBaseSettings.defaultFilePath)
 		Log.emit("DB settings are: " + settings.toString())
 		dataMaster = DataMaster(settings)
-		dataMaster.prepareDB()
+	}
+	val userMaster: UserMaster
+	{
+		userMaster = UserMaster(dataMaster)
 	}
 	val server: HttpServer
 	{

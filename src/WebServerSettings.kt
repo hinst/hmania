@@ -1,17 +1,10 @@
 open class WebServerSettings {
 
-    public var port: Int = 0
+	public var port: Int = 0
 
-    public fun setDefaults() {
-        port = 8000
-    }
-
-}
-
-object DefaultWebServerSettings: WebServerSettings() {
-    {
-        setDefaults()
-    }
+	public fun setDefaults() {
+		port = 8000
+	}
 
 }
 

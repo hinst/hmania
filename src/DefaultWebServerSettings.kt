@@ -1,0 +1,6 @@
+object DefaultWebServerSettings: WebServerSettings() {
+	{
+		setDefaults()
+	}
+
+}

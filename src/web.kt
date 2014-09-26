@@ -3,6 +3,8 @@ import java.util.HashMap
 
 val ContentTypeHttpHeaderKey = "Content-Type"
 val ContentTypePlainTextUTF8 = "text/plain; charset=utf-8"
+/** Java default internal charset is UTF-16 */
+val ContentTypePlainTextUTF16 = "text/plain; charset=utf-16"
 val PageLineEnding = "\r\n"
 
 fun HttpExchange.respond(data: ByteArray) {
@@ -14,7 +16,7 @@ fun HttpExchange.respond(data: ByteArray) {
 
 fun HttpExchange.respond(text: String) {
 	this.getResponseHeaders()!!.set(ContentTypeHttpHeaderKey, ContentTypePlainTextUTF8)
-	this.respond(text.getBytes())
+	this.respond(text.getBytes("UTF8"))
 }
 
 fun getURLQueryArguments(query: String): Map<String, String> {
