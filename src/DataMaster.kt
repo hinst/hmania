@@ -19,6 +19,7 @@ class DataMaster(val dataBaseSettings: DataBaseSettings) {
 
 	fun obtainConnection(): java.sql.Connection? {
 		var connection = dataSource.getConnection()
+		connection?.setAutoCommit(false)
 		return connection
 	}
 
