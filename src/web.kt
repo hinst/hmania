@@ -16,7 +16,7 @@ fun HttpExchange.respond(data: ByteArray) {
 
 fun HttpExchange.respond(text: String) {
 	this.getResponseHeaders()!!.set(ContentTypeHttpHeaderKey, ContentTypePlainTextUTF8)
-	this.respond(text.getBytes("UTF8"))
+	this.respond(text.getBytesUTF8())
 }
 
 fun getURLQueryArguments(query: String): Map<String, String> {
@@ -43,5 +43,13 @@ fun HttpExchange.getArguments(): Map<String, String> {
 		return getURLQueryArguments(query)
 	else
 		return HashMap()
+}
+
+fun String.getBytesUTF8(): ByteArray {
+	return this.getBytes("UTF-8")
+}
+
+fun String.getBytesUTF16(): ByteArray {
+	return this.getBytes("UTF-16BE")
 }
 

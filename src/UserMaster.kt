@@ -17,14 +17,5 @@ class UserMaster(val dataMaster: DataMaster) {
 		statement.executeUpdate(ensureUsersTableStatement)
 	}
 
-	class object {
-
-		fun generatePasswordHash(password: String): JSONObject {
-			val json = JSONObject()
-			return json
-		}
-
-	}
-
 }
 
