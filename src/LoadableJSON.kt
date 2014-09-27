@@ -4,7 +4,7 @@ import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
 import java.io.FileReader
 
-trait IJSONLoadable {
+trait LoadableJSON {
 
 	/** json should be either JSONObject or JSONArray*/
 	fun loadFromJSON(json: Any)

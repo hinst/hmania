@@ -1,8 +1,7 @@
 import java.sql.ResultSet
 import org.json.simple.JSONObject
 
-class User(): IDataBaseRow, IJSONLoadable {
-
+class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 	enum class Access() {
 		NoAccess
 		AccessUser
@@ -26,15 +25,15 @@ class User(): IDataBaseRow, IJSONLoadable {
 	var access: Access = Access.NoAccess
 	var sessionID: Long = 0
 
-	fun toInsertStatement(table: String): String {
-		return "INSERT INTO ${table} (name, password, access, sessionID) VALUES (${name}, ${password}, ${access.ordinal()}, ${sessionID});"
-	}
-
 	override fun loadFromTable(table: ResultSet) {
 		name = table.getString("name")!!
 		password = table.getString("password")!!
 		access = Access.values()[table.getInt("access")]
 		sessionID = table.getLong("sessionID")
+	}
+
+	override fun getInsertStatement(tableName: String): String {
+		return "INSERT INTO ${tableName} (name, password, access, sessionID) VALUES (${name}, ${password}, ${access.ordinal()}, ${sessionID});"
 	}
 
 	override fun loadFromJSON(json: Any) {
@@ -44,6 +43,5 @@ class User(): IDataBaseRow, IJSONLoadable {
 		access = getAccess(json.get("access") as String)
 		sessionID = json.get("sessionID") as Long
 	}
-
 
 }
