@@ -45,6 +45,7 @@ class UserMaster(val dataMaster: DataMaster) {
 		val connection = dataMaster.obtainConnection()
 		val users = loadUserMap(connection)
 		if (false == users.contains(user.name)) {
+			Log.emit("Now creating admin user '${user.name}'...")
 			insertUser(connection, user)
 		}
 		connection.close()

@@ -17,6 +17,7 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 		userMaster = UserMaster(dataMaster)
 		val webSiteAdmin = User()
 		webSiteAdmin.loadFromJSONFile(UserMaster.defaultAdminSettingsFilePath)
+		userMaster.ensureUser(webSiteAdmin)
 	}
 
 	val server: HttpServer

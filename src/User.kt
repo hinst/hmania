@@ -3,9 +3,9 @@ import org.json.simple.JSONObject
 
 class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 	enum class Access() {
-		NoAccess
-		AccessUser
-		AccessAdmin
+		No
+		User
+		Admin
 	}
 
 	class object {
@@ -14,7 +14,7 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 			try {
 				return Access.valueOf(string)
 			} catch (e: Exception) {
-				return Access.NoAccess
+				return Access.No
 			}
 		}
 
@@ -22,7 +22,7 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 
 	var name: String = ""
 	var password: String = ""
-	var access: Access = Access.NoAccess
+	var access: Access = Access.No
 	var sessionID: Long = 0
 
 	override fun loadFromTable(table: ResultSet) {
