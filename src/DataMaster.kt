@@ -1,6 +1,9 @@
+import java.sql.Connection
 import javax.sql.*
 import org.h2.jdbcx.JdbcDataSource
 import java.io.PrintWriter
+import java.util.LinkedList
+import java.lang.reflect.Constructor
 
 class DataMaster(val dataBaseSettings: DataBaseSettings) {
 
@@ -17,10 +20,22 @@ class DataMaster(val dataBaseSettings: DataBaseSettings) {
 
 	val dataSource: DataSource = createDataSource()
 
-	fun obtainConnection(): java.sql.Connection? {
+	fun obtainConnection(): Connection? {
 		var connection = dataSource.getConnection()
 		connection?.setAutoCommit(false)
 		return connection
+	}
+
+	fun loadTable<T: IDataBaseRow>(a: () -> T, connection: Connection, statementString: String): List<T> {
+		val statement = connection.createStatement()!!
+		val table = statement.executeQuery(statementString)
+		val list = listBuilder<T>()
+		while (table.next()) {
+			val row: T = a()
+			row.loadFromTable(table)
+			list.add(row)
+		}
+		return list.build()
 	}
 
 }

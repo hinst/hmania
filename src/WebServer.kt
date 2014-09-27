@@ -7,14 +7,16 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 	val dataMaster: DataMaster
 	{
 		val settings = DataBaseSettings()
-		settings.loadFromJsonFile(DataBaseSettings.defaultFilePath)
+		settings.loadFromJSONFile(DataBaseSettings.defaultFilePath)
 		Log.emit("DB settings are: " + settings.toString())
 		dataMaster = DataMaster(settings)
 	}
+
 	val userMaster: UserMaster
 	{
 		userMaster = UserMaster(dataMaster)
 	}
+
 	val server: HttpServer
 	{
 		Log.emit("Now creating HTTP server; port = ${settings.port}...")

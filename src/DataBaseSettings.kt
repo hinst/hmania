@@ -2,8 +2,7 @@ import org.json.simple.*
 import org.json.simple.parser.*
 import java.io.FileReader
 
-open class DataBaseSettings {
-
+open class DataBaseSettings: IJSONLoadable {
 	var address: String = ""
 	var user: String = ""
 	var password: String = ""
@@ -12,9 +11,8 @@ open class DataBaseSettings {
 		val defaultFilePath: String = "db.settings.json";
 	}
 
-	fun loadFromJsonFile(filePath: String) {
-		val parser = JSONParser()
-		val json = parser.parse(FileReader(filePath)) as JSONObject;
+	override fun loadFromJSON(json: Any) {
+		json as JSONObject
 		address = json.get("address") as String;
 		user = json.get("user") as String;
 		password = json.get("password") as String;

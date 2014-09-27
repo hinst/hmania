@@ -19,25 +19,36 @@ class UserMaster(val dataMaster: DataMaster) {
 		val connection = dataMaster.obtainConnection()!!
 		val statement = connection.createStatement()!!
 		statement.executeUpdate(ensureUsersTableStatement)
+		connection.commit()
 		connection.close()
 	}
 
-	fun loadUsersTable(connection: Connection): Map<String, User> {
-		val statement = connection.createStatement()!!
-		val result = HashMap<String, User>()
-		val table = statement.executeQuery(loadUsersStatement)
-		while (table.next()) {
-			val user = User(table.getString("name")!!)
-			user.password = table.getString("password")!!
-			user.access = table.getInt("access")!!
-			user.sessionID = table.getLong("sessionID")!!
-			result.put(user.name, user)
-		}
-		return result
+	fun loadUserList(connection: Connection): List<User> {
+		val createUser = { () -> User() }
+		val list = dataMaster.loadTable(createUser, connection, loadUsersStatement)
+		return list
 	}
 
-	fun ensureAdminUser(admin: User) {
+	fun loadUserMap(connection: Connection): Map<String, User> {
+		val list = loadUserList(connection)
+		val map = HashMap<String, User>()
+		for (user in list) {
+			map.put(user.name, user)
+		}
+		return map
+	}
+
+	fun insertUser(connection: Connection, user: User) {
+		val statement = connection.createStatement()!!
+		statement.executeUpdate(user.toInsertStatement(usersTableName))
+	}
+
+	fun ensureUser(user: User) {
 		val connection = dataMaster.obtainConnection()!!
+		val users = loadUserMap(connection)
+		if (false == users.contains(user.name)) {
+			insertUser(connection, user)
+		}
 		connection.close()
 	}
 
