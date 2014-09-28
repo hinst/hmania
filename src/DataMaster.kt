@@ -39,9 +39,8 @@ class DataMaster(val dataBaseSettings: DataBaseSettings) {
 	}
 
 	fun insertRow(connection: Connection, tableName: String, row: InsertableDataBaseRow) {
-		val statementString = row.getInsertStatement(tableName)
-		val statement = connection.createStatement()!!
-		statement.executeUpdate(statementString)
+		val statement = row.getInsertStatement(connection, tableName)
+		statement.executeUpdate()
 	}
 
 	fun execute(connection: Connection, statementString: String) {

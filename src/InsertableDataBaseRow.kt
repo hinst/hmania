@@ -1,5 +1,8 @@
+import java.sql.PreparedStatement
+import java.sql.Connection
+
 trait InsertableDataBaseRow {
 
-	fun getInsertStatement(tableName: String): String
+	fun getInsertStatement(connection: Connection, tableName: String): PreparedStatement
 
 }

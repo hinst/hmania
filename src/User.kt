@@ -1,12 +1,9 @@
 import java.sql.ResultSet
 import org.json.simple.JSONObject
+import java.sql.Connection
+import java.sql.PreparedStatement
 
 class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
-	enum class Access() {
-		No
-		User
-		Admin
-	}
 
 	class object {
 
@@ -18,6 +15,22 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 			}
 		}
 
+		fun loadSessionIDFromJSON(json: JSONObject): Long {
+			val sessionID = json.get("sessionID")
+			val result =
+				if (sessionID != null)
+					sessionID as Long
+				else
+					0
+			return result
+		}
+
+	}
+
+	enum class Access() {
+		No
+		User
+		Admin
 	}
 
 	var name: String = ""
@@ -32,8 +45,14 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 		sessionID = table.getLong("sessionID")
 	}
 
-	override fun getInsertStatement(tableName: String): String {
-		return "INSERT INTO ${tableName} (name, password, access, sessionID) VALUES (${name}, ${password}, ${access.ordinal()}, ${sessionID});"
+	override fun getInsertStatement(connection: Connection, tableName: String): PreparedStatement {
+		val statementString = "INSERT INTO ${tableName} (name, password, access, sessionID) VALUES (?, ?, ?, ?);"
+		val statement = connection.prepareStatement(statementString)!!
+		statement.setString(1, name)
+		statement.setString(2, password)
+		statement.setInt(3, access.ordinal())
+		statement.setLong(4, sessionID)
+		return statement
 	}
 
 	override fun loadFromJSON(json: Any) {
@@ -41,7 +60,11 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 		name = json.get("name") as String
 		password = json.get("password") as String
 		access = getAccess(json.get("access") as String)
-		sessionID = json.get("sessionID") as Long
+		sessionID = loadSessionIDFromJSON(json)
+	}
+
+	fun encodePassword() {
+		password = PasswordHash.create(password).toJSONString()
 	}
 
 }
