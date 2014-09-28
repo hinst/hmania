@@ -1,5 +1,6 @@
 import com.sun.net.httpserver.*
 import java.util.HashMap
+import java.nio.charset.StandardCharsets
 
 val ContentTypeHttpHeaderKey = "Content-Type"
 val ContentTypePlainTextUTF8 = "text/plain; charset=utf-8"
@@ -46,10 +47,10 @@ fun HttpExchange.getArguments(): Map<String, String> {
 }
 
 fun String.getBytesUTF8(): ByteArray {
-	return this.getBytes("UTF-8")
+	return this.getBytes(StandardCharsets.UTF_8)
 }
 
 fun String.getBytesUTF16(): ByteArray {
-	return this.getBytes("UTF-16BE")
+	return this.getBytes(StandardCharsets.UTF_16BE)
 }
 

@@ -11,8 +11,9 @@ class UserMaster(val dataMaster: DataMaster) {
 
 		val nameLengthLimit = 64;
 		val passwordLengthLimit = 64;
+		val passwordColumnLengthLimit = 128;
 		val usersTableName = "users"
-		val ensureUsersTableStatement = "CREATE TABLE IF NOT EXISTS ${usersTableName}(name VARCHAR(${nameLengthLimit}), password VARCHAR(${passwordLengthLimit}), access INT, sessionID BIGINT, PRIMARY KEY(name));"
+		val ensureUsersTableStatement = "CREATE TABLE IF NOT EXISTS ${usersTableName}(name VARCHAR(${nameLengthLimit}), password VARCHAR(${passwordColumnLengthLimit}), access INT, sessionID BIGINT, PRIMARY KEY(name));"
 		val loadUsersStatement = "SELECT * from ${usersTableName};"
 		val defaultAdminSettingsFilePath = "admin.settings.json"
 
