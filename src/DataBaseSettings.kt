@@ -2,7 +2,7 @@ import org.json.simple.*
 import org.json.simple.parser.*
 import java.io.FileReader
 
-open class DataBaseSettings: LoadableJSON {
+class DataBaseSettings: LoadableJSON {
 	var address: String = ""
 	var user: String = ""
 	var password: String = ""

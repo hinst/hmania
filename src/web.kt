@@ -7,6 +7,7 @@ val ContentTypePlainTextUTF8 = "text/plain; charset=utf-8"
 /** Java default internal charset is UTF-16 */
 val ContentTypePlainTextUTF16 = "text/plain; charset=utf-16"
 val PageLineEnding = "\r\n"
+val actionURLArgumentKey = "action"
 
 fun HttpExchange.respond(data: ByteArray) {
 	this.sendResponseHeaders(200, data.count().toLong())

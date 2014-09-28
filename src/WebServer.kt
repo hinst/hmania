@@ -21,6 +21,11 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 		userMaster.ensureUser(webSiteAdmin)
 	}
 
+	val contentMaster: ContentMaster
+	{
+		contentMaster = ContentMaster()
+	}
+
 	val server: HttpServer
 	{
 		Log.emit("Now creating HTTP server; port = ${settings.port}...")
@@ -58,6 +63,22 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 			response.append("'${argument.key}' = '${argument.value}'${PageLineEnding}")
 		}
 		exchange.respond(response.toString())
+	}
+
+	fun prepareActionHandler(actionHandler: ActionHandler) {
+		actionHandler.dataMaster = dataMaster
+		actionHandler.userMaster = userMaster
+	}
+
+	fun actionRespond(exchange: HttpExchange) {
+		val arguments = exchange.getArguments()
+		val action = arguments.get(actionURLArgumentKey)?: ""
+		val actionHandlerCreator = ActionHandlerMap.get(action)
+		if (actionHandlerCreator != null) {
+			val actionHandler = actionHandlerCreator()
+			actionHandler.exchange = exchange
+			prepareActionHandler(actionHandler)
+		}
 	}
 
 
