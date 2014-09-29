@@ -7,7 +7,11 @@ open class ActionHandler {
 	var contentMaster: ContentMaster? = null
 	var userMaster: UserMaster? = null
 
-	open fun respond() {
+	fun respond() {
+
+	}
+
+	open fun actRespond() {
 
 	}
 

@@ -67,6 +67,7 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 
 	fun prepareActionHandler(actionHandler: ActionHandler) {
 		actionHandler.dataMaster = dataMaster
+		actionHandler.contentMaster = contentMaster
 		actionHandler.userMaster = userMaster
 	}
 

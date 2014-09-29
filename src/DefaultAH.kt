@@ -1,5 +1,7 @@
-class DefaultAH: ActionHandler {
+class DefaultAH: ActionHandler() {
 
+	override fun actRespond() {
 
+	}
 
 }
