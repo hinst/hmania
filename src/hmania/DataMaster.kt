@@ -1,3 +1,5 @@
+package hmania
+
 import java.sql.Connection
 import javax.sql.*
 import org.h2.jdbcx.JdbcDataSource

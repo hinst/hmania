@@ -1,3 +1,5 @@
+package hmania
+
 import java.sql.PreparedStatement
 import java.sql.Connection
 

@@ -1,7 +1,11 @@
+package hmania
+
 import com.sun.net.httpserver.*
 import java.net.InetSocketAddress
 import org.joda.time.DateTime
 import org.joda.time.Period
+import hmania.AH.ActionHandler
+import hmania.AH.ActionHandlerMap
 
 class WebServer(val settings: WebServerSettings) : HttpHandler {
 	val dataMaster: DataMaster

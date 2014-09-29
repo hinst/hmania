@@ -1,3 +1,5 @@
+package hmania
+
 import java.sql.ResultSet
 
 trait LoadableDataBaseRow {

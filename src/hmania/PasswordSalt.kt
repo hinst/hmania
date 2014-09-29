@@ -1,3 +1,5 @@
+package hmania
+
 import java.security.SecureRandom
 
 object PasswordSalt {

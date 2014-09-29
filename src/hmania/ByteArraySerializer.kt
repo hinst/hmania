@@ -1,3 +1,5 @@
+package hmania
+
 import sun.misc.BASE64Encoder
 import sun.misc.BASE64Decoder
 

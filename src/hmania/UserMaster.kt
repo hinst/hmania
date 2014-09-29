@@ -1,3 +1,5 @@
+package hmania
+
 import org.json.simple.JSONObject
 import java.sql.Connection
 import java.util.HashMap

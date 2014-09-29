@@ -1,3 +1,5 @@
+package hmania
+
 import org.json.simple.*
 import org.json.simple.parser.*
 import java.io.FileReader

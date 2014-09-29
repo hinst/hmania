@@ -1,3 +1,5 @@
+package hmania
+
 import java.security.MessageDigest
 import org.json.simple.JSONObject
 

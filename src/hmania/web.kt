@@ -1,3 +1,5 @@
+package hmania
+
 import com.sun.net.httpserver.*
 import java.util.HashMap
 import java.nio.charset.StandardCharsets
@@ -45,6 +47,25 @@ fun HttpExchange.getArguments(): Map<String, String> {
 		return getURLQueryArguments(query)
 	else
 		return HashMap()
+}
+
+fun HttpExchange.getArgumentsAsDebugText(): String {
+	val stringBuilder = StringBuilder()
+	val arguments = this.getArguments()
+	stringBuilder.append("Count of URL arguments: ${arguments.count()}${PageLineEnding}")
+	for (argument in arguments) {
+		stringBuilder.append("'${argument.key}' = '${argument.value}'${PageLineEnding}")
+	}
+	return stringBuilder.toString()
+}
+
+fun HttpExchange.getRequestHeadersAsDebugText(): String {
+	val stringBuilder = StringBuilder()
+	val headers = this.getRequestHeaders()!!
+	stringBuilder.append("Count of headers: " + headers.size() + PageLineEnding)
+	for (header in headers) {
+		responseText_sb.append(header.toString())
+	}
 }
 
 fun String.getBytesUTF8(): ByteArray {

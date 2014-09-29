@@ -1,3 +1,5 @@
+package hmania
+
 class App {
 
 	public fun run() {

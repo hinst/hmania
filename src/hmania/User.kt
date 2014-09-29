@@ -1,3 +1,5 @@
+package hmania
+
 import java.sql.ResultSet
 import org.json.simple.JSONObject
 import java.sql.Connection

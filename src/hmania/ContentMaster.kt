@@ -1,3 +1,5 @@
+package hmania
+
 import org.stringtemplate.v4.*
 import java.io.InputStream
 import sun.misc.Resource

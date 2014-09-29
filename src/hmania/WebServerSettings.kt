@@ -1,3 +1,5 @@
+package hmania
+
 open class WebServerSettings {
 
 	public var port: Int = 0
