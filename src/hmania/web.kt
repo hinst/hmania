@@ -62,10 +62,12 @@ fun HttpExchange.getArgumentsAsDebugText(): String {
 fun HttpExchange.getRequestHeadersAsDebugText(): String {
 	val stringBuilder = StringBuilder()
 	val headers = this.getRequestHeaders()!!
-	stringBuilder.append("Count of headers: " + headers.size() + PageLineEnding)
+	stringBuilder.append("Count of headers:  + ${headers.size()}${PageLineEnding}")
 	for (header in headers) {
-		responseText_sb.append(header.toString())
+		stringBuilder.append(header.toString())
+		stringBuilder.append(PageLineEnding)
 	}
+	return stringBuilder.toString()
 }
 
 fun String.getBytesUTF8(): ByteArray {

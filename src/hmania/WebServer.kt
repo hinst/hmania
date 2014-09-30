@@ -8,6 +8,7 @@ import hmania.AH.ActionHandler
 import hmania.AH.ActionHandlerMap
 
 class WebServer(val settings: WebServerSettings) : HttpHandler {
+
 	val dataMaster: DataMaster
 	{
 		val settings = DataBaseSettings()
@@ -55,7 +56,7 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 	}
 
 	fun respond(exchange: HttpExchange) {
-		testRespond(exchange)
+		actionRespond(exchange)
 	}
 
 	fun testRespond(exchange: HttpExchange) {
@@ -84,6 +85,8 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 			actionHandler.exchange = exchange
 			prepareActionHandler(actionHandler)
 		}
+		else
+			exchange.respond("ClientMistake: unknown action: '${action}'")
 	}
 
 

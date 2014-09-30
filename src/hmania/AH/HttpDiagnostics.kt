@@ -11,6 +11,7 @@ class HttpDiagnostics: ActionHandler() {
 		val responseText_sb = StringBuilder()
 		responseText_sb.append("HTTP diagnostics page" + PageLineEnding)
 		responseText_sb.append(exchange.getArgumentsAsDebugText())
+		responseText_sb.append(exchange.getRequestHeadersAsDebugText())
 		exchange.respond(responseText_sb.toString())
 	}
 
