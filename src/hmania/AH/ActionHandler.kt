@@ -17,20 +17,20 @@ open class ActionHandler {
 	var userMaster: UserMaster? = null
 	var currentUser: User? = null
 	var fArguments: Map<String, String>? = null
-	var arguments: Map<String, String>? = null
+	var arguments: Map<String, String> = HashMap()
 		get() {
 			if (null == fArguments) {
 				fArguments = exchange!!.getArguments()
 			}
-			return fArguments
+			return fArguments!!
 		}
 	var fRequestFields: Map<String, String>? = null
-	var requestFields: Map<String, String>? = null
+	var requestFields: Map<String, String> = HashMap()
 		get() {
 			if (null == fRequestFields) {
 				fRequestFields = exchange!!.getRequestFields()
 			}
-			return fRequestFields
+			return fRequestFields!!
 		}
 
 	fun respond() {

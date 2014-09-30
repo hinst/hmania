@@ -6,10 +6,8 @@ import hmania.Log
 class Login: ActionHandler() {
 
 	override fun actRespond() {
-		val exchange = exchange!!
-		val arguments = arguments!!
 		val name = arguments.get("name")
-		val password = arguments.get("password")
+		val password = requestFields.get("password")
 		if (null != name) {
 			if (null != password) {
 				logIn(name, password)
