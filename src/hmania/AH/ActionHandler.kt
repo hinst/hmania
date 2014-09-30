@@ -15,7 +15,7 @@ open class ActionHandler {
 	var currentUser: User? = null
 
 	fun respond() {
-
+		actRespond()
 	}
 
 	fun recognizeUser() {

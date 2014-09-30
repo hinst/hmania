@@ -82,8 +82,10 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 		val actionHandlerCreator = ActionHandlerMap.get(action)
 		if (actionHandlerCreator != null) {
 			val actionHandler = actionHandlerCreator()
+			Log.emit("Action handler for action '${action}' found: '${actionHandler.javaClass.getName()}'")
 			actionHandler.exchange = exchange
 			prepareActionHandler(actionHandler)
+			actionHandler.respond()
 		}
 		else
 			exchange.respond("ClientMistake: unknown action: '${action}'")
