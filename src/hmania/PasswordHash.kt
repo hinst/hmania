@@ -11,7 +11,7 @@ class PasswordHash(val hash: ByteArray, val salt: ByteArray): SaveableJSON {
 			val messageDigest = MessageDigest.getInstance("MD5")
 			val salt = PasswordSalt.generate()
 			messageDigest.update(salt)
-			val hash = messageDigest.digest(password.getBytesUTF16())!!
+			val hash = messageDigest.digest(password.getBytesUTF_16())!!
 			return PasswordHash(hash, salt)
 		}
 

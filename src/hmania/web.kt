@@ -3,6 +3,9 @@ package hmania
 import com.sun.net.httpserver.*
 import java.util.HashMap
 import java.nio.charset.StandardCharsets
+import java.io.InputStreamReader
+import java.io.BufferedReader
+import java.net.URLDecoder
 
 val ContentTypeHttpHeaderKey = "Content-Type"
 val ContentTypePlainTextUTF8 = "text/plain; charset=utf-8"
@@ -20,7 +23,20 @@ fun HttpExchange.respond(data: ByteArray) {
 
 fun HttpExchange.respond(text: String) {
 	this.getResponseHeaders()!!.set(ContentTypeHttpHeaderKey, ContentTypePlainTextUTF8)
-	this.respond(text.getBytesUTF8())
+	this.respond(text.getBytesUTF_8())
+}
+
+fun mapToDebugText<A, B>(map: Map<A, B>?): String {
+	val s = StringBuilder()
+	if (map != null) {
+		s.append("Map contains ${map.size} items\n")
+		for (item in map) {
+			s.append("'${item.key}' = '${item.value}'\n")
+		}
+	}
+	else
+		s.append("Map = null")
+	return s.toString()
 }
 
 fun getURLQueryArguments(query: String): Map<String, String> {
@@ -29,10 +45,10 @@ fun getURLQueryArguments(query: String): Map<String, String> {
 	for (pairString in pairs) {
 		val pair = pairString.split('=')
 		if (pair.count() > 0) {
-			val key = pair[0]
+			val key = URLDecoder.decode(pair[0], "UTF-8")
 			val value =
 				if (pair.count() > 1)
-					pair[1]
+					URLDecoder.decode(pair[1], "UTF-8")
 				else
 					""
 			result.put(key, value)
@@ -42,39 +58,37 @@ fun getURLQueryArguments(query: String): Map<String, String> {
 }
 
 fun HttpExchange.getArguments(): Map<String, String> {
-	val query = this.getRequestURI()?.getQuery()
+	val query = this.getRequestURI()?.getRawQuery()
 	if (query != null)
 		return getURLQueryArguments(query)
 	else
 		return HashMap()
 }
 
-fun HttpExchange.getArgumentsAsDebugText(): String {
-	val stringBuilder = StringBuilder()
-	val arguments = this.getArguments()
-	stringBuilder.append("Count of URL arguments: ${arguments.count()}${PageLineEnding}")
-	for (argument in arguments) {
-		stringBuilder.append("'${argument.key}' = '${argument.value}'${PageLineEnding}")
+fun HttpExchange.getRequestFields(): Map<String, String> {
+	val requestMethod = this.getRequestMethod()
+	var result: Map<String, String> = HashMap()
+	if (requestMethod != null)
+	{
+		if (requestMethod.equalsIgnoreCase("post")) {
+			val requestBody = this.getRequestBody()
+			if (requestBody != null) {
+				val reader = InputStreamReader(requestBody, StandardCharsets.UTF_8)
+				val bufferedReader = BufferedReader(reader)
+				val query = bufferedReader.readLine()
+				if (query != null)
+					result = getURLQueryArguments(query)
+			}
+		}
 	}
-	return stringBuilder.toString()
+	return result
 }
 
-fun HttpExchange.getRequestHeadersAsDebugText(): String {
-	val stringBuilder = StringBuilder()
-	val headers = this.getRequestHeaders()!!
-	stringBuilder.append("Count of headers:  + ${headers.size()}${PageLineEnding}")
-	for (header in headers) {
-		stringBuilder.append(header.toString())
-		stringBuilder.append(PageLineEnding)
-	}
-	return stringBuilder.toString()
-}
-
-fun String.getBytesUTF8(): ByteArray {
+fun String.getBytesUTF_8(): ByteArray {
 	return this.getBytes(StandardCharsets.UTF_8)
 }
 
-fun String.getBytesUTF16(): ByteArray {
+fun String.getBytesUTF_16(): ByteArray {
 	return this.getBytes(StandardCharsets.UTF_16BE)
 }
 

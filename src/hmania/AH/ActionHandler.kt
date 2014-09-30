@@ -5,6 +5,9 @@ import hmania.DataMaster
 import hmania.ContentMaster
 import hmania.UserMaster
 import hmania.User
+import hmania.getArguments
+import java.util.HashMap
+import hmania.getRequestFields
 
 open class ActionHandler {
 
@@ -13,6 +16,22 @@ open class ActionHandler {
 	var contentMaster: ContentMaster? = null
 	var userMaster: UserMaster? = null
 	var currentUser: User? = null
+	var fArguments: Map<String, String>? = null
+	var arguments: Map<String, String>? = null
+		get() {
+			if (null == fArguments) {
+				fArguments = exchange!!.getArguments()
+			}
+			return fArguments
+		}
+	var fRequestFields: Map<String, String>? = null
+	var requestFields: Map<String, String>? = null
+		get() {
+			if (null == fRequestFields) {
+				fRequestFields = exchange!!.getRequestFields()
+			}
+			return fRequestFields
+		}
 
 	fun respond() {
 		actRespond()
@@ -22,7 +41,6 @@ open class ActionHandler {
 	}
 
 	open fun actRespond() {
-
 	}
 
 }
