@@ -11,6 +11,7 @@
       <element id="directory" name="content">
         <element id="dir-copy" path="$PROJECT_DIR$/content" />
       </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/spark-core-2.0.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
