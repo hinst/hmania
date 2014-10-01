@@ -1,7 +1,5 @@
 package hmania
 
-import org.stringtemplate.v4.*
-import org.stringtemplate.v4.ST as StringTemplate
 import java.io.InputStream
 import sun.misc.Resource
 import java.util.ResourceBundle
@@ -27,6 +25,7 @@ class ContentMaster {
 		val pageTemplateLoginKey = "pageLogin"
 		val hmaniaColor = "#C2E0FF"
 		val hmaniaColorTemplateKey = "hmaniaColor"
+		val pageTitleSeparator = "$ pageTitle $"
 
 	}
 
@@ -57,7 +56,7 @@ class ContentMaster {
 		directoryStream.close()
 	}
 
-	fun addFiles(template: StringTemplate) {
+	fun addFiles(template: StringReplacer) {
 		for (file in files) {
 			val key = file.key.replace('.', '_')
 			val fileLoader = file.value
@@ -65,12 +64,12 @@ class ContentMaster {
 		}
 	}
 
-	fun newTemplate(string: String): StringTemplate {
-		val st = ST(string, templateStart, templateStop)
-		addFiles(st)
-		st.add(hmaniaColorTemplateKey, hmaniaColor.toString())
-		st.add(dollarTemplateKey, "$");
-		return st
+	fun newReplacer(): StringReplacer {
+		val stringReplacer = StringReplacer()
+		addFiles(stringReplacer)
+		stringReplacer.add(hmaniaColorTemplateKey, hmaniaColor.toString())
+		stringReplacer.add(dollarTemplateKey, "$");
+		return stringReplacer
 	}
 
 	fun fetch(fileName: String): InputStream {
@@ -83,10 +82,30 @@ class ContentMaster {
 	}
 
 	fun replace(string: String): String {
-		val template = newTemplate(string)
-		val resolvedString = template.render()
-		resolvedString!!
+		val template = newReplacer()
+		val resolvedString = template.replace(string)
 		return resolvedString
+	}
+
+	fun formPage(string: String): String {
+		val pageTitlePosition = string.indexOf(pageTitleSeparator)
+		if (pageTitlePosition >= 0) {
+			val title = string.substring(0, pageTitlePosition).trim()
+			val body = string.substring(pageTitlePosition + pageTitleSeparator.length, string.length)
+			return formPage(title, body)
+		}
+		else {
+			return formPage("", string)
+		}
+	}
+
+	fun formPage(titleString: String, bodyString: String): String {
+		val pageTemplateString = loadString(ContentMaster.pageTemplateFileName)
+		val template = newReplacer()
+		template.add(pageTitleTemplateKey, replace(titleString))
+		template.add(pageBodyTemplateKey, replace(bodyString))
+		val fullPage = template.replace(pageTemplateString)
+		return fullPage
 	}
 
 	fun shutdown() {

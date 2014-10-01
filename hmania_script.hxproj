@@ -22,7 +22,7 @@
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="hmania.script.Main" />
+    <option mainClass="hmania.script.login" />
     <option enabledebug="False" />
     <option additional="" />
   </build>
@@ -35,6 +35,7 @@
     <compile path="src\hmania\Main.hx" />
     <compile path="src\hmania\AH\Main.hx" />
     <compile path="src\hmania\script\Main.hx" />
+    <compile path="src\hmania\script\login.hx" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

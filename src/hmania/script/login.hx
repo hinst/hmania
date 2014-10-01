@@ -4,10 +4,10 @@ import js.Lib;
 import js.Browser;
 
 
-class Main 
+class login 
 {
 	
-	static function main() 
+	static function main()
 	{
 	}
 	
