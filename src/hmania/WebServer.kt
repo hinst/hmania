@@ -1,13 +1,15 @@
 package hmania
 
-import com.sun.net.httpserver.*
-import java.net.InetSocketAddress
 import org.joda.time.DateTime
 import org.joda.time.Period
 import hmania.AH.ActionHandler
 import hmania.AH.ActionHandlerMap
+import org.simpleframework.http.*
+import org.simpleframework.http.core.*
+import org.simpleframework.transport.connect.*
+import java.net.InetSocketAddress
 
-class WebServer(val settings: WebServerSettings) : HttpHandler {
+class WebServer(val settings: WebServerSettings): Container {
 
 	val dataMaster: DataMaster
 	{
@@ -31,43 +33,29 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 		contentMaster = ContentMaster()
 	}
 
-	val server: HttpServer
-	{
-		Log.emit("Now creating HTTP server; port = ${settings.port}...")
-		server = HttpServer.create(InetSocketAddress(settings.port), 1)!!
-		server.createContext("/hmania", this)
-		server.setExecutor(null)
-	}
+	val server = ContainerServer(this)
 
 	val logRequestProcessedEnabled = true
 	val testResponseText = "Проверка"
 
-	public fun startServer() {
-		Log.emit("Now starting HTTP server...")
-		server.start()
-	}
+	var connection: Connection? = null
 
-	override fun handle(exchange: HttpExchange?) {
+	override fun handle(request: Request?, response: Response?) {
 		val respondStartMoment = DateTime();
-		respond(exchange!!);
-		val requestString = exchange.getRequestURI()?.getPath();
+		val result = respond(request!!, response!!)
 		if (logRequestProcessedEnabled)
-			Log.emit("HTTP Request '${requestString}' processed, time spent: " + Period(respondStartMoment, DateTime()).toString())
+			Log.emit("HTTP Request '${request.getPath()}' processed, time spent: " + Period(respondStartMoment, DateTime()).toString())
 	}
 
-	fun respond(exchange: HttpExchange) {
-		actionRespond(exchange)
+	public fun startServer() {
+		Log.emit("Now starting HTTP server; port = ${settings.port}...")
+		val address = InetSocketAddress(settings.port)
+		connection = SocketConnection(server)
+		connection!!.connect(address)
 	}
 
-	fun testRespond(exchange: HttpExchange) {
-		val response = StringBuilder()
-		response.append(testResponseText + PageLineEnding)
-		val arguments = exchange.getArguments()
-		response.append("Count of URL arguments: ${arguments.count()}${PageLineEnding}")
-		for (argument in arguments) {
-			response.append("'${argument.key}' = '${argument.value}'${PageLineEnding}")
-		}
-		exchange.respond(response.toString())
+	fun respond(request: Request, response: Response): Any {
+		return actionRespond(request, response)
 	}
 
 	fun prepareActionHandler(actionHandler: ActionHandler) {
@@ -76,19 +64,21 @@ class WebServer(val settings: WebServerSettings) : HttpHandler {
 		actionHandler.userMaster = userMaster
 	}
 
-	fun actionRespond(exchange: HttpExchange) {
-		val arguments = exchange.getArguments()
-		val action = arguments.get(actionURLArgumentKey)?: ""
+	fun actionRespond(request: Request, response: Response): Any {
+		val action = request.getQuery()!!.get("action") ?: ""
 		val actionHandlerCreator = ActionHandlerMap.get(action)
 		if (actionHandlerCreator != null) {
 			val actionHandler = actionHandlerCreator()
 			Log.emit("Action handler for action '${action}' found: '${actionHandler.javaClass.getName()}'")
-			actionHandler.exchange = exchange
+			actionHandler.request = request
+			actionHandler.response = response
 			prepareActionHandler(actionHandler)
 			actionHandler.respond()
+			return actionHandler.answer
+
 		}
 		else
-			exchange.respond("ClientMistake: unknown action: '${action}'")
+			return "ClientMistake: unknown action: '${action}'"
 	}
 
 

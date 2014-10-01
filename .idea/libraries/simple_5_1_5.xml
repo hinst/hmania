@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="spark-core-2.0.0">
+  <library name="simple-5.1.5">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/spark-core-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/simple-5.1.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

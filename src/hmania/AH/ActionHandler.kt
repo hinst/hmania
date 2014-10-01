@@ -8,30 +8,16 @@ import hmania.User
 import hmania.getArguments
 import java.util.HashMap
 import hmania.getRequestFields
+import org.simpleframework.http.*
 
 open class ActionHandler {
-
-	var exchange: HttpExchange? = null
+	var request: Request? = null
+	var response: Response? = null
 	var dataMaster: DataMaster? = null
 	var contentMaster: ContentMaster? = null
 	var userMaster: UserMaster? = null
 	var currentUser: User? = null
 	var fArguments: Map<String, String>? = null
-	var arguments: Map<String, String> = HashMap()
-		get() {
-			if (null == fArguments) {
-				fArguments = exchange!!.getArguments()
-			}
-			return fArguments!!
-		}
-	var fRequestFields: Map<String, String>? = null
-	var requestFields: Map<String, String> = HashMap()
-		get() {
-			if (null == fRequestFields) {
-				fRequestFields = exchange!!.getRequestFields()
-			}
-			return fRequestFields!!
-		}
 
 	fun respond() {
 		actRespond()
