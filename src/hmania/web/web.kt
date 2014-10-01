@@ -1,4 +1,4 @@
-package hmania
+package hmania.web
 
 import com.sun.net.httpserver.*
 import java.util.HashMap
@@ -7,11 +7,11 @@ import java.io.InputStreamReader
 import java.io.BufferedReader
 import java.net.URLDecoder
 
-val ContentTypeHttpHeaderKey = "Content-Type"
-val ContentTypePlainTextUTF8 = "text/plain; charset=utf-8"
+val contentTypeTextPlain = "text/plain";
+val contentTypeHttpHeaderKey = "Content-Type"
+val contentTypePlainTextUTF8 = "${contentTypeTextPlain}; charset=utf-8"
 /** Java default internal charset is UTF-16 */
-val ContentTypePlainTextUTF16 = "text/plain; charset=utf-16"
-val PageLineEnding = "\r\n"
+val contentTypePlainTextUTF16 = "${contentTypeTextPlain}; charset=utf-16"
 val actionURLArgumentKey = "action"
 
 fun HttpExchange.respond(data: ByteArray) {
@@ -22,21 +22,8 @@ fun HttpExchange.respond(data: ByteArray) {
 }
 
 fun HttpExchange.respond(text: String) {
-	this.getResponseHeaders()!!.set(ContentTypeHttpHeaderKey, ContentTypePlainTextUTF8)
+	this.getResponseHeaders()!!.set(contentTypeHttpHeaderKey, contentTypePlainTextUTF8)
 	this.respond(text.getBytesUTF_8())
-}
-
-fun mapToDebugText<A, B>(map: Map<A, B>?): String {
-	val s = StringBuilder()
-	if (map != null) {
-		s.append("Map contains ${map.size} items\n")
-		for (item in map) {
-			s.append("'${item.key}' = '${item.value}'\n")
-		}
-	}
-	else
-		s.append("Map = null")
-	return s.toString()
 }
 
 fun getURLQueryArguments(query: String): Map<String, String> {

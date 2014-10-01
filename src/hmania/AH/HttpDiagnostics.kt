@@ -1,14 +1,17 @@
 package hmania.AH
 
 import hmania.*
+import hmania.web.*
 
 class HttpDiagnostics: ActionHandler() {
 
 	override fun actRespond() {
 		// response text string builder
-		val responseText_sb = StringBuilder()
-		responseText_sb.appendln("HTTP diagnostics page")
-		responseText_sb.appendln("Address: " + request!!.getAddress())
+		val s = StringBuilder()
+		s.appendln("HTTP diagnostics page")
+		s.appendln("Address: '${request.getAddress()}'")
+		s.appendln("Query fields: " + mapToDebugText(request.getQuery()))
+		response.respond(s.toString())
 	}
 
 }

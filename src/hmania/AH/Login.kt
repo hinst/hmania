@@ -1,13 +1,13 @@
 package hmania.AH
 
-import hmania.getArguments
+import hmania.web.getArguments
 import hmania.Log
 
 class Login: ActionHandler() {
 
 	override fun actRespond() {
-		val name = request!!.queryParams("name")
-		val password = request!!.params("password")
+		val name = request.getParameter("name")
+		val password = request.getQuery()?.get("password")
 		if (null != name) {
 			if (null != password) {
 				logIn(name, password)

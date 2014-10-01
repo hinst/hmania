@@ -2,6 +2,7 @@ package hmania
 
 import java.security.MessageDigest
 import org.json.simple.JSONObject
+import hmania.web.*
 
 class PasswordHash(val hash: ByteArray, val salt: ByteArray): SaveableJSON {
 

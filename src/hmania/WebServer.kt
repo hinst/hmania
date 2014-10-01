@@ -8,6 +8,7 @@ import org.simpleframework.http.*
 import org.simpleframework.http.core.*
 import org.simpleframework.transport.connect.*
 import java.net.InetSocketAddress
+import hmania.web.respond
 
 class WebServer(val settings: WebServerSettings): Container {
 
@@ -42,7 +43,7 @@ class WebServer(val settings: WebServerSettings): Container {
 
 	override fun handle(request: Request?, response: Response?) {
 		val respondStartMoment = DateTime();
-		val result = respond(request!!, response!!)
+		respond(request!!, response!!)
 		if (logRequestProcessedEnabled)
 			Log.emit("HTTP Request '${request.getPath()}' processed, time spent: " + Period(respondStartMoment, DateTime()).toString())
 	}
@@ -50,12 +51,13 @@ class WebServer(val settings: WebServerSettings): Container {
 	public fun startServer() {
 		Log.emit("Now starting HTTP server; port = ${settings.port}...")
 		val address = InetSocketAddress(settings.port)
-		connection = SocketConnection(server)
-		connection!!.connect(address)
+		val connection = SocketConnection(server)
+		connection.connect(address)
+		this.connection = connection
 	}
 
-	fun respond(request: Request, response: Response): Any {
-		return actionRespond(request, response)
+	fun respond(request: Request, response: Response) {
+		actionRespond(request, response)
 	}
 
 	fun prepareActionHandler(actionHandler: ActionHandler) {
@@ -64,7 +66,7 @@ class WebServer(val settings: WebServerSettings): Container {
 		actionHandler.userMaster = userMaster
 	}
 
-	fun actionRespond(request: Request, response: Response): Any {
+	fun actionRespond(request: Request, response: Response) {
 		val action = request.getQuery()!!.get("action") ?: ""
 		val actionHandlerCreator = ActionHandlerMap.get(action)
 		if (actionHandlerCreator != null) {
@@ -74,11 +76,9 @@ class WebServer(val settings: WebServerSettings): Container {
 			actionHandler.response = response
 			prepareActionHandler(actionHandler)
 			actionHandler.respond()
-			return actionHandler.answer
-
 		}
 		else
-			return "ClientMistake: unknown action: '${action}'"
+			response.respond("ClientMistake: unknown action: '${action}'")
 	}
 
 

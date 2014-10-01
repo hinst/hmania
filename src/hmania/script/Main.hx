@@ -1,4 +1,4 @@
-package hmania;
+package hmania.script;
 
 import js.Lib;
 import js.Browser;
