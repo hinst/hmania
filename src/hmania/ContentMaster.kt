@@ -1,6 +1,7 @@
 package hmania
 
 import org.stringtemplate.v4.*
+import org.stringtemplate.v4.ST as StringTemplate
 import java.io.InputStream
 import sun.misc.Resource
 import java.util.ResourceBundle
@@ -9,7 +10,9 @@ import java.nio.file.*
 import java.util.HashMap
 import java.net.URI
 import java.util.ArrayList
+import java.io.BufferedReader
 
+// has shutdown method
 class ContentMaster {
 
 	class object {
@@ -17,7 +20,13 @@ class ContentMaster {
 		val contentSubDirectory = "content"
 		val templateStart = '$'
 		val templateStop = '$'
-		val bufferSize = 1024
+		val dollarTemplateKey = "dollar"
+		val pageTemplateFileName = "pageTemplate.html"
+		val pageTitleTemplateKey = "pageTitle"
+		val pageBodyTemplateKey = "pageBody"
+		val pageTemplateLoginKey = "pageLogin"
+		val hmaniaColor = "#C2E0FF"
+		val hmaniaColorTemplateKey = "hmaniaColor"
 
 	}
 
@@ -26,60 +35,62 @@ class ContentMaster {
 	val contentURIParts = contentURI.toString().split("!")
 	val logFileListOnStart = true
 
-	inner class StringLoader(val fileName: String) {
-
-		override fun toString(): String {
-			return loadString(fileName)
-		}
-
-	}
-
-	val files: Map<String, StringLoader>
+	val fileSystem: FileSystem =
+		FileSystems.newFileSystem(
+			URI.create(contentURIParts[0]),
+			HashMap<String, String>()
+		)!!
+	val files: Map<String, FileLoader>
 	{
-		val fileSystem: FileSystem =
-			FileSystems.newFileSystem(
-				URI.create(contentURIParts[0]),
-				HashMap<String, String>()
-			)!!
 		val contentURIPath = fileSystem.getPath(contentURIParts[1])
 		val directoryStream = Files.newDirectoryStream(contentURIPath)!!
-		val files = HashMap<String, StringLoader>()
+		val files = HashMap<String, FileLoader>()
 		for (path in directoryStream) {
 			val fileName = path.getFileName().toString()
 			if (logFileListOnStart) {
-				Log.emit("Content file: '${path}'")
+				Log.emit("Content file: '${fileName}' = '${path}")
 			}
-			val stringLoader = StringLoader(fileName)
+			val stringLoader = FileLoader(path)
 			files.set(fileName, stringLoader)
 		}
 		this.files = files
 		directoryStream.close()
-		fileSystem.close()
 	}
 
-	fun newST(string: String): ST {
+	fun addFiles(template: StringTemplate) {
+		for (file in files) {
+			val key = file.key.replace('.', '_')
+			val fileLoader = file.value
+			template.add(key, fileLoader)
+		}
+	}
+
+	fun newTemplate(string: String): StringTemplate {
 		val st = ST(string, templateStart, templateStop)
+		addFiles(st)
+		st.add(hmaniaColorTemplateKey, hmaniaColor.toString())
+		st.add(dollarTemplateKey, "$");
 		return st
 	}
 
-	fun load(fileName: String): InputStream {
-		return classLoader.getResourceAsStream(fileName)!!
+	fun fetch(fileName: String): InputStream {
+		return files.get(fileName)!!.fetch()
 	}
 
 	fun loadString(fileName: String): String {
-		val stream = load(fileName)
-		val buffer = ByteArray(bufferSize)
-		val stringBuilder = StringBuilder()
-		var shouldContinue = true
-		while (shouldContinue) {
-			val dataLength = stream.read(buffer)
-			shouldContinue = dataLength == bufferSize
-			if (dataLength > 0) {
-				val currentString = String(buffer, 0, dataLength, StandardCharsets.UTF_16)
-				stringBuilder.append(currentString)
-			}
-		}
-		return stringBuilder.toString()
+		val string = files.get(fileName)!!.toString()
+		return string
+	}
+
+	fun replace(string: String): String {
+		val template = newTemplate(string)
+		val resolvedString = template.render()
+		resolvedString!!
+		return resolvedString
+	}
+
+	fun shutdown() {
+		fileSystem.close()
 	}
 
 }

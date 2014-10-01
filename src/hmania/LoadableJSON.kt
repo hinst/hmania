@@ -13,8 +13,10 @@ trait LoadableJSON {
 
 	fun loadFromJSONFile(filePath: String) {
 		val parser = JSONParser()
-		val json = parser.parse(FileReader(filePath))
+		val reader = FileReader(filePath)
+		val json = parser.parse(reader)
 		loadFromJSON(json!!)
+		reader.close()
 	}
 
 }

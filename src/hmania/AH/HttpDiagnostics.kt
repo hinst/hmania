@@ -11,7 +11,7 @@ class HttpDiagnostics: ActionHandler() {
 		s.appendln("HTTP diagnostics page")
 		s.appendln("Address: '${request.getAddress()}'")
 		s.appendln("Query fields: " + mapToDebugText(request.getQuery()))
-		response.respond(s.toString())
+		response.respond(s.toString(), ContentTypes.plainText)
 	}
 
 }

@@ -6,7 +6,7 @@ import hmania.Log
 class Login: ActionHandler() {
 
 	override fun actRespond() {
-		val name = request.getParameter("name")
+		val name = request.getQuery()?.get("name")
 		val password = request.getQuery()?.get("password")
 		if (null != name) {
 			if (null != password) {
@@ -23,7 +23,7 @@ class Login: ActionHandler() {
 	}
 
 	fun logIn(name: String, password: String) {
-
+		Log.emit("${name} attempts to log in")
 	}
 
 }

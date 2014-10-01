@@ -9,6 +9,7 @@ import org.simpleframework.http.core.*
 import org.simpleframework.transport.connect.*
 import java.net.InetSocketAddress
 import hmania.web.respond
+import hmania.web.ContentTypes
 
 class WebServer(val settings: WebServerSettings): Container {
 
@@ -42,10 +43,14 @@ class WebServer(val settings: WebServerSettings): Container {
 	var connection: Connection? = null
 
 	override fun handle(request: Request?, response: Response?) {
-		val respondStartMoment = DateTime();
-		respond(request!!, response!!)
-		if (logRequestProcessedEnabled)
-			Log.emit("HTTP Request '${request.getPath()}' processed, time spent: " + Period(respondStartMoment, DateTime()).toString())
+		try {
+			val respondStartMoment = DateTime();
+			respond(request!!, response!!)
+			if (logRequestProcessedEnabled)
+				Log.emit("HTTP Request '${request.getPath()}' processed, time spent: " + Period(respondStartMoment, DateTime()).toString())
+		} catch (e: Exception) {
+			e.printStackTrace()
+		}
 	}
 
 	public fun startServer() {
@@ -78,7 +83,7 @@ class WebServer(val settings: WebServerSettings): Container {
 			actionHandler.respond()
 		}
 		else
-			response.respond("ClientMistake: unknown action: '${action}'")
+			response.respond("ClientMistake: unknown action: '${action}'", ContentTypes.plainText)
 	}
 
 

@@ -7,11 +7,6 @@ import java.io.InputStreamReader
 import java.io.BufferedReader
 import java.net.URLDecoder
 
-val contentTypeTextPlain = "text/plain";
-val contentTypeHttpHeaderKey = "Content-Type"
-val contentTypePlainTextUTF8 = "${contentTypeTextPlain}; charset=utf-8"
-/** Java default internal charset is UTF-16 */
-val contentTypePlainTextUTF16 = "${contentTypeTextPlain}; charset=utf-16"
 val actionURLArgumentKey = "action"
 
 fun HttpExchange.respond(data: ByteArray) {
@@ -22,7 +17,7 @@ fun HttpExchange.respond(data: ByteArray) {
 }
 
 fun HttpExchange.respond(text: String) {
-	this.getResponseHeaders()!!.set(contentTypeHttpHeaderKey, contentTypePlainTextUTF8)
+	this.getResponseHeaders()!!.set(ContentTypes.httpHeaderKey, ContentTypes.plainTextUTF_8)
 	this.respond(text.getBytesUTF_8())
 }
 
