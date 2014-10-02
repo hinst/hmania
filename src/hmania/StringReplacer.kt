@@ -5,8 +5,14 @@ import java.util.HashMap
 class StringReplacer {
 
 	class object {
+
 		val templateStart = '$'
 		val templateEnd = '$'
+
+		fun getTemplateString(s: String): String {
+			return templateStart + s + templateEnd
+		}
+
 	}
 
 	val map: HashMap<String, Any> = HashMap()

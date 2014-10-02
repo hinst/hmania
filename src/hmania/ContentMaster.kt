@@ -16,17 +16,16 @@ class ContentMaster {
 	class object {
 
 		val contentSubDirectory = "content"
-		val templateStart = '$'
-		val templateStop = '$'
 		val dollarTemplateKey = "dollar"
 		val pageTemplateFileName = "pageTemplate.html"
 		val pageTitleTemplateKey = "pageTitle"
 		val pageBodyTemplateKey = "pageBody"
 		val pageTemplateLoginKey = "pageLogin"
-		val hmaniaColor = "#C2E0FF"
+		val hmaniaColor = "#FFD699"
 		val hmaniaColorTemplateKey = "hmaniaColor"
 		val pageTitleSeparator = "$ pageTitle $"
 		val pageTemplateFilePrefix = "file."
+		val hmaniaWebDirectory = "hmania"
 
 	}
 
@@ -68,7 +67,8 @@ class ContentMaster {
 	fun newReplacer(): StringReplacer {
 		val stringReplacer = StringReplacer()
 		addFiles(stringReplacer)
-		stringReplacer.add(hmaniaColorTemplateKey, hmaniaColor.toString())
+		stringReplacer.add(hmaniaColorTemplateKey, hmaniaColor)
+		stringReplacer.add("hmania", hmaniaWebDirectory)
 		return stringReplacer
 	}
 
