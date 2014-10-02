@@ -31,6 +31,11 @@ open class ActionHandler {
 	var userMaster: UserMaster? = null
 	var currentUser: User? = null
 
+	fun getRequestField(name: String): String {
+		val value = request.getQuery()?.get("name")
+		return value ?: ""
+	}
+
 	fun respond() {
 		actRespond()
 	}
