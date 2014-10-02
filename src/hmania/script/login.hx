@@ -11,7 +11,7 @@ class Login extends Action
 	public function new()
 	{	
 		super();
-		nameField = cast(Browser.document.getElementById("name"), InputElement);
+		nameField = cast(Browser.document.getElementById("nameField"), InputElement);
 	}
 	
 	public override function run()

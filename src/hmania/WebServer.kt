@@ -10,6 +10,7 @@ import org.simpleframework.transport.connect.*
 import java.net.InetSocketAddress
 import hmania.web.respond
 import hmania.web.ContentTypes
+import hmania.web.respondUTF_8
 
 class WebServer(val settings: WebServerSettings): Container {
 
@@ -84,7 +85,7 @@ class WebServer(val settings: WebServerSettings): Container {
 			actionHandler.respond()
 		}
 		else
-			response.respond("ClientMistake: unknown action: '${action}'", ContentTypes.plainText)
+			response.respondUTF_8("ClientMistake: unknown action: '${action}'", ContentTypes.plainText)
 	}
 
 

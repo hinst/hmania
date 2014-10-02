@@ -62,7 +62,7 @@ class UserMaster(val dataMaster: DataMaster) {
 			logIn(user, matchingUser)
 	}
 
-	fun logIn(user: User, record: User) {
+	private fun logIn(user: User, record: User) {
 		val legit = record.checkPassword(user.password)
 		if (legit) {
 			user.access = record.access

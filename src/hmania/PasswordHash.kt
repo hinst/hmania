@@ -20,8 +20,8 @@ class PasswordHash(): SaveableJSON, LoadableJSON {
 		val messageDigest = MessageDigest.getInstance("MD5")
 		messageDigest.update(salt)
 		val hash = messageDigest.digest(password.getBytesUTF_16())!!
-		val result = hash.equals(this.hash)
-		return result
+		val hashEqual = hash.toBase64String() == this.hash.toBase64String()
+		return hashEqual
 	}
 
 	override fun saveToJSON(): Any {

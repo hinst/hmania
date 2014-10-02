@@ -77,7 +77,14 @@ class ContentMaster {
 	}
 
 	fun loadString(fileName: String): String {
-		val string = files.get(fileName)!!.toString()
+		val fileLoader = files.get(fileName)
+		val string =
+			if (fileLoader != null)
+				fileLoader.toString()
+			else
+				""
+		if (null == fileLoader)
+			Log.emit("Warning: file loader for '$fileName' not found")
 		return string
 	}
 

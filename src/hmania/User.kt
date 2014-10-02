@@ -74,7 +74,8 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 	fun checkPassword(password: String): Boolean {
 		val hash = PasswordHash()
 		hash.loadFromJSONString(this.password)
-		return hash.checkPassword(password)
+		val result = hash.checkPassword(password)
+		return result
 	}
 
 }

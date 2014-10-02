@@ -74,3 +74,13 @@ fun String.getBytesUTF_16(): ByteArray {
 	return this.getBytes(StandardCharsets.UTF_16BE)
 }
 
+fun getAsterisks(password: String): String {
+	val stringBuilder = StringBuilder()
+	for (char in password) {
+		stringBuilder.append("*")
+	}
+	return stringBuilder.toString()
+}
+
+
+

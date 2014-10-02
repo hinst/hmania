@@ -3,6 +3,7 @@ package hmania
 import org.json.simple.*
 import org.json.simple.parser.*
 import java.io.FileReader
+import hmania.web.getAsterisks
 
 class DataBaseSettings: LoadableJSON {
 	var address: String = ""
@@ -20,17 +21,8 @@ class DataBaseSettings: LoadableJSON {
 		password = json.get("password") as String;
 	}
 
-	fun passwordToDebugString(): String {
-		val stringBuilder = StringBuilder()
-		val password = this.password
-		for (char in password) {
-			stringBuilder.append("*")
-		}
-		return stringBuilder.toString()
-	}
-
 	override fun toString(): String {
-		return "address: '${address}', user: '${user}', password: '${passwordToDebugString()}'"
+		return "address: '$address', user: '$user', password: '${getAsterisks(password)}'"
 	}
 
 }

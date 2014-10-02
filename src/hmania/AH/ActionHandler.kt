@@ -28,7 +28,12 @@ open class ActionHandler {
 		set(value) {
 			fContentMaster = value
 		}
-	var userMaster: UserMaster? = null
+	var fUserMaster: UserMaster? = null
+	var userMaster: UserMaster
+		get() = fUserMaster!!
+		set(value) {
+			fUserMaster = value
+		}
 	var currentUser: User? = null
 
 	fun getRequestField(name: String): String {
@@ -58,7 +63,7 @@ open class ActionHandler {
 
 	fun servePage(page: String) {
 		val responseString = replace(contentMaster.formPage(page))
-		response.respond(responseString, ContentTypes.htmlText)
+		response.respondUTF_8(responseString, ContentTypes.htmlTextUTF_8)
 	}
 
 }
