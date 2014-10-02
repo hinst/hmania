@@ -66,7 +66,15 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 	}
 
 	fun encodePassword() {
-		password = PasswordHash.create(password).toJSONString()
+		val hash = PasswordHash()
+		hash.createFromPassword(password)
+		password = hash.toJSONString()
+	}
+
+	fun checkPassword(password: String): Boolean {
+		val hash = PasswordHash()
+		hash.loadFromJSONString(this.password)
+		return hash.checkPassword(password)
 	}
 
 }

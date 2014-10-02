@@ -32,7 +32,7 @@ open class ActionHandler {
 	var currentUser: User? = null
 
 	fun getRequestField(name: String): String {
-		val value = request.getQuery()?.get("name")
+		val value = request.getQuery()?.get(name)
 		return value ?: ""
 	}
 

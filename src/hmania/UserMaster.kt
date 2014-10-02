@@ -54,5 +54,25 @@ class UserMaster(val dataMaster: DataMaster) {
 		connection.close()
 	}
 
+	fun logIn(user: User) {
+		val connection = dataMaster.obtainConnection()
+		val list = loadUserMap(connection)
+		val matchingUser = list.get(user.name)
+		if (matchingUser != null)
+			logIn(user, matchingUser)
+	}
+
+	fun logIn(user: User, record: User) {
+		val legit = record.checkPassword(user.password)
+		if (legit) {
+			user.access = record.access
+			user.sessionID = PasswordSalt.generateSessionID()
+		}
+		else {
+			user.access = User.Access.No
+			user.sessionID = 0
+		}
+	}
+
 }
 

@@ -5,10 +5,10 @@ import org.json.simple.JSONArray
 
 trait SaveableJSON {
 
-	fun SaveToJSON(): Any
+	fun saveToJSON(): Any
 
 	fun toJSONString(): String {
-		val json = SaveToJSON()
+		val json = saveToJSON()
 		val result =
 			if (json is JSONObject)
 				json.toJSONString()!!

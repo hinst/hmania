@@ -5,17 +5,29 @@ import org.json.simple.JSONObject
 import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
 import java.io.FileReader
+import java.io.StringReader
+import java.io.Reader
 
 trait LoadableJSON {
 
-	/** json should be either JSONObject or JSONArray*/
+	/** json should be either JSONObject or JSONArray */
 	fun loadFromJSON(json: Any)
 
-	fun loadFromJSONFile(filePath: String) {
+	fun loadFromJSONReader(reader: Reader) {
 		val parser = JSONParser()
-		val reader = FileReader(filePath)
 		val json = parser.parse(reader)
 		loadFromJSON(json!!)
+	}
+
+	fun loadFromJSONFile(filePath: String) {
+		val reader = FileReader(filePath)
+		loadFromJSONReader(reader)
+		reader.close()
+	}
+
+	fun loadFromJSONString(string: String) {
+		val reader = StringReader(string)
+		loadFromJSONReader(reader)
 		reader.close()
 	}
 

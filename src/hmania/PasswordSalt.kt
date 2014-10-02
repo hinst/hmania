@@ -15,4 +15,8 @@ object PasswordSalt {
 		return result
 	}
 
+	fun generateSessionID(): Long {
+		return random.nextLong()
+	}
+
 }
