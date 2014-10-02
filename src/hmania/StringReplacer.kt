@@ -19,7 +19,12 @@ class StringReplacer {
 	fun replace(s: String): String {
 		var result = s
 		for (pair in map) {
-			result = result.replace(pair.key, pair.value.toString())
+			val key = pair.key
+			val present = result.contains(key);
+			if (present) {
+				val text = replace(pair.value.toString())
+				result = result.replace(key, text)
+			}
 		}
 		return result
 	}

@@ -1,14 +1,23 @@
 package hmania.script;
 
-import js.Lib;
-import js.Browser;
+import js.*;
+import js.html.*;
 
-
-class login 
+class Login extends Action
 {
 	
-	static function main()
-	{
+	var nameField: InputElement;
+
+	public function new()
+	{	
+		super();
+		nameField = cast(Browser.document.getElementById("name"), InputElement);
 	}
 	
+	public override function run()
+	{
+		super.run();
+		nameField.focus();
+	}
+		
 }

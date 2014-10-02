@@ -26,6 +26,7 @@ class ContentMaster {
 		val hmaniaColor = "#C2E0FF"
 		val hmaniaColorTemplateKey = "hmaniaColor"
 		val pageTitleSeparator = "$ pageTitle $"
+		val pageTemplateFilePrefix = "file."
 
 	}
 
@@ -58,7 +59,7 @@ class ContentMaster {
 
 	fun addFiles(template: StringReplacer) {
 		for (file in files) {
-			val key = file.key.replace('.', '_')
+			val key = pageTemplateFilePrefix + file.key
 			val fileLoader = file.value
 			template.add(key, fileLoader)
 		}
@@ -68,7 +69,6 @@ class ContentMaster {
 		val stringReplacer = StringReplacer()
 		addFiles(stringReplacer)
 		stringReplacer.add(hmaniaColorTemplateKey, hmaniaColor.toString())
-		stringReplacer.add(dollarTemplateKey, "$");
 		return stringReplacer
 	}
 
@@ -102,8 +102,8 @@ class ContentMaster {
 	fun formPage(titleString: String, bodyString: String): String {
 		val pageTemplateString = loadString(ContentMaster.pageTemplateFileName)
 		val template = newReplacer()
-		template.add(pageTitleTemplateKey, replace(titleString))
-		template.add(pageBodyTemplateKey, replace(bodyString))
+		template.add(pageTitleTemplateKey, titleString)
+		template.add(pageBodyTemplateKey, bodyString)
 		val fullPage = template.replace(pageTemplateString)
 		return fullPage
 	}

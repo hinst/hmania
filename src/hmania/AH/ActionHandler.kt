@@ -8,6 +8,7 @@ import hmania.Log
 import hmania.web.ContentTypes
 
 open class ActionHandler {
+	var action: String = ""
 	var fRequest: Request? = null
 	var request: Request
 		get() = fRequest!!
@@ -40,8 +41,18 @@ open class ActionHandler {
 	open fun actRespond() {
 	}
 
+	fun newReplacer(): StringReplacer {
+		val replacer = contentMaster.newReplacer()
+		replacer.add("action", action)
+		return replacer
+	}
+
+	fun replace(string: String): String {
+		return newReplacer().replace(string)
+	}
+
 	fun servePage(page: String) {
-		val responseString = contentMaster.formPage(page)
+		val responseString = replace(contentMaster.formPage(page))
 		response.respond(responseString, ContentTypes.htmlText)
 	}
 
