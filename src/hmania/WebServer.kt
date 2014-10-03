@@ -83,6 +83,7 @@ class WebServer(val settings: WebServerSettings): Container {
 			actionHandler.response = response
 			prepareActionHandler(actionHandler)
 			actionHandler.respond()
+			actionHandler.close()
 		}
 		else
 			response.respondUTF_8("ClientMistake: unknown action: '${action}'", ContentTypes.plainText)

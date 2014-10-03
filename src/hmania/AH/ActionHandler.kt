@@ -6,8 +6,11 @@ import hmania.web.*
 import java.util.HashMap
 import hmania.Log
 import hmania.web.ContentTypes
+import java.sql.Connection
+import java.io.Closeable
 
-open class ActionHandler {
+open class ActionHandler: Closeable {
+
 	var action: String = ""
 	var fRequest: Request? = null
 	var request: Request
@@ -21,7 +24,12 @@ open class ActionHandler {
 		set(value) {
 			fResponse = value
 		}
-	var dataMaster: DataMaster? = null
+	var fDataMaster: DataMaster? = null
+	var dataMaster: DataMaster
+		get() = fDataMaster!!
+		set(value) {
+			fDataMaster = value
+		}
 	var fContentMaster: ContentMaster? = null
 	var contentMaster: ContentMaster
 		get() = fContentMaster!!
@@ -35,6 +43,16 @@ open class ActionHandler {
 			fUserMaster = value
 		}
 	var currentUser: User? = null
+
+	var fConnection: Connection? = null
+	var connection: Connection
+		get() {
+			if (null == fConnection)
+				fConnection = dataMaster.obtainConnection()
+			return fConnection!!
+		}
+		set(value) {
+		}
 
 	fun getRequestField(name: String): String {
 		val value = request.getQuery()?.get(name)
@@ -66,4 +84,10 @@ open class ActionHandler {
 		response.respondUTF_8(responseString, ContentTypes.htmlTextUTF_8)
 	}
 
+	override fun close() {
+		if (fConnection != null) {
+			fConnection!!.close()
+			fConnection = null
+		}
+	}
 }
