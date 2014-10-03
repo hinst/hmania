@@ -42,7 +42,7 @@ open class ActionHandler: Closeable {
 		set(value) {
 			fUserMaster = value
 		}
-	var currentUser: User? = null
+	var currentUser: User = User()
 
 	var fDBConnection: Connection? = null
 	var dbConnection: Connection
@@ -60,10 +60,22 @@ open class ActionHandler: Closeable {
 	}
 
 	fun respond() {
+		recognizeUser()
 		actRespond()
 	}
 
 	fun recognizeUser() {
+		val userName = request.getCookie(UserMaster.CookieKey.userName)?.getValue()
+		if (userName != null) {
+			val sessionID = request.getCookie(UserMaster.CookieKey.sessionID)?.getValue()
+			if (sessionID != null) {
+				currentUser.name = userName
+				currentUser.sessionID = sessionID
+			}
+		}
+	}
+
+	fun recognizeUser(name: String, sessionID: String) {
 	}
 
 	open fun actRespond() {

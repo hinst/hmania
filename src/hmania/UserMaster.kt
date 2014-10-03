@@ -19,6 +19,11 @@ class UserMaster(val dataMaster: DataMaster) {
 		val loadUsersStatement = "SELECT * from ${usersTableName};"
 		val defaultAdminSettingsFilePath = "admin.settings.json"
 
+		object CookieKey {
+			val sessionID = "hmania_sessionID"
+			val userName = "hmania_userName"
+		}
+
 	}
 
 	fun ensureUsersTable() {

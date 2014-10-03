@@ -7,6 +7,7 @@ import hmania.User
 import hmania.web.respond
 import hmania.web.ContentTypes
 import hmania.web.getAsterisks
+import hmania.UserMaster
 
 class Login: ActionHandler() {
 
@@ -48,6 +49,10 @@ class Login: ActionHandler() {
 		user.name = name
 		user.password = password
 		userMaster.logIn(dbConnection, user)
+		if (user.access != User.Access.No) {
+			response.setCookie(UserMaster.CookieKey.userName, user.name)
+			response.setCookie(UserMaster.CookieKey.sessionID, user.sessionID.toString())
+		}
 		respond2("your access is " + user.access)
 	}
 
