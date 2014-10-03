@@ -48,7 +48,7 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 	}
 
 	override fun getInsertStatement(connection: Connection, tableName: String): PreparedStatement {
-		val statementString = "INSERT INTO ${tableName} (name, password, access, sessionID) VALUES (?, ?, ?, ?);"
+		val statementString = "INSERT INTO $tableName (name, password, access, sessionID) VALUES (?, ?, ?, ?);"
 		val statement = connection.prepareStatement(statementString)!!
 		statement.setString(1, name)
 		statement.setString(2, password)
@@ -76,6 +76,16 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 		hash.loadFromJSONString(this.password)
 		val result = hash.checkPassword(password)
 		return result
+	}
+
+	fun getUpdateSessionStatement(connection: Connection, tableName: String): PreparedStatement {
+		val statement =
+			connection.prepareStatement(
+				"UPDATE $tableName SET sessionID=? where name=?;"
+			)!!
+		statement.setLong(1, sessionID)
+		statement.setString(2, name)
+		return statement
 	}
 
 }

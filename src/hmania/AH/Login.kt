@@ -47,7 +47,7 @@ class Login: ActionHandler() {
 		val user = User()
 		user.name = name
 		user.password = password
-		userMaster.logIn(user)
+		userMaster.logIn(dbConnection, user)
 		respond2("your access is " + user.access)
 	}
 

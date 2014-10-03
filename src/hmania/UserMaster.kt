@@ -54,12 +54,20 @@ class UserMaster(val dataMaster: DataMaster) {
 		connection.close()
 	}
 
-	fun logIn(user: User) {
-		val connection = dataMaster.obtainConnection()
+	fun updateSession(connection: Connection, user: User) {
+		val statement = user.getUpdateSessionStatement(connection, usersTableName)
+		statement.executeUpdate()
+	}
+
+	fun logIn(connection: Connection, user: User) {
 		val list = loadUserMap(connection)
 		val matchingUser = list.get(user.name)
-		if (matchingUser != null)
+		if (matchingUser != null) {
 			logIn(user, matchingUser)
+			if (user.access != User.Access.No) {
+				updateSession(connection, user)
+			}
+		}
 	}
 
 	private fun logIn(user: User, record: User) {
