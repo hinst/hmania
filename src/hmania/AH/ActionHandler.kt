@@ -44,12 +44,12 @@ open class ActionHandler: Closeable {
 		}
 	var currentUser: User? = null
 
-	var fConnection: Connection? = null
-	var connection: Connection
+	var fDBConnection: Connection? = null
+	var dbConnection: Connection
 		get() {
-			if (null == fConnection)
-				fConnection = dataMaster.obtainConnection()
-			return fConnection!!
+			if (null == fDBConnection)
+				fDBConnection = dataMaster.obtainConnection()
+			return fDBConnection!!
 		}
 		set(value) {
 		}
@@ -85,9 +85,9 @@ open class ActionHandler: Closeable {
 	}
 
 	override fun close() {
-		if (fConnection != null) {
-			fConnection!!.close()
-			fConnection = null
+		if (fDBConnection != null) {
+			fDBConnection!!.close()
+			fDBConnection = null
 		}
 	}
 }
