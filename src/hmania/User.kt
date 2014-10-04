@@ -35,9 +35,16 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 		Admin
 	}
 
+	/** Default value is "" */
 	var name: String = ""
+
+	/** Default value is "" */
 	var password: String = ""
+
+	/** Default value is Access.No */
 	var access: Access = Access.No
+
+	/** Default value is 0 */
 	var sessionID: Long = 0
 
 	override fun loadFromTable(table: ResultSet) {

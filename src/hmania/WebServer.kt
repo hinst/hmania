@@ -77,7 +77,7 @@ class WebServer(val settings: WebServerSettings): Container {
 		val actionHandlerCreator = ActionHandlerMap.get(action)
 		if (actionHandlerCreator != null) {
 			val actionHandler = actionHandlerCreator()
-			Log.emit("Action handler for action '${action}' found: '${actionHandler.javaClass.getName()}'")
+			Log.emit("Action handler for action '$action' found: '${actionHandler.javaClass.getName()}'")
 			actionHandler.action = action
 			actionHandler.request = request
 			actionHandler.response = response

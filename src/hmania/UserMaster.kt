@@ -45,6 +45,16 @@ class UserMaster(val dataMaster: DataMaster) {
 		return map
 	}
 
+	fun loadUserByName(connection: Connection, name: String): User? {
+		if (name.isNotEmpty()) {
+			val users = loadUserMap(connection)
+			val user = users.get(name)
+			return user
+		}
+		else
+			return null
+	}
+
 	fun insertUser(connection: Connection, user: User) {
 		dataMaster.insertRow(connection, usersTableName, user)
 	}
@@ -64,26 +74,37 @@ class UserMaster(val dataMaster: DataMaster) {
 		statement.executeUpdate()
 	}
 
+	/** Takes user.name & user.password -> assigns user.access & user.sessionID */
 	fun logIn(connection: Connection, user: User) {
-		val list = loadUserMap(connection)
-		val matchingUser = list.get(user.name)
-		if (matchingUser != null) {
-			logIn(user, matchingUser)
+		val recordedUser = loadUserByName(connection, user.name)
+		if (recordedUser != null) {
+			logIn(user, recordedUser)
 			if (user.access != User.Access.No) {
 				updateSession(connection, user)
 			}
 		}
 	}
 
-	private fun logIn(user: User, record: User) {
-		val legit = record.checkPassword(user.password)
+	private fun logIn(user: User, recordedUser: User) {
+		user.access = User.Access.No
+		val legit = recordedUser.checkPassword(user.password)
 		if (legit) {
-			user.access = record.access
+			user.access = recordedUser.access
 			user.sessionID = PasswordSalt.generateSessionID()
 		}
 		else {
-			user.access = User.Access.No
 			user.sessionID = 0
+		}
+	}
+
+	/** Takes user.name & user.sessionID -> assigns user.access */
+	fun recognize(connection: Connection, user: User) {
+		user.access = User.Access.No
+		if (user.sessionID != 0.toLong()) {
+			val recordedUser = loadUserByName(connection, user.name)
+			if (recordedUser != null)
+				if (recordedUser.sessionID == user.sessionID)
+					user.access = recordedUser.access
 		}
 	}
 

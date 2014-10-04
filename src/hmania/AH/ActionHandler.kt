@@ -11,6 +11,10 @@ import java.io.Closeable
 
 open class ActionHandler: Closeable {
 
+	class object {
+		val debugUserRecognition = true;
+	}
+
 	var action: String = ""
 	var fRequest: Request? = null
 	var request: Request
@@ -70,12 +74,24 @@ open class ActionHandler: Closeable {
 			val sessionID = request.getCookie(UserMaster.CookieKey.sessionID)?.getValue()
 			if (sessionID != null) {
 				currentUser.name = userName
-				currentUser.sessionID = sessionID
+				try {
+					currentUser.sessionID = sessionID.toLong()
+				}
+				catch (e: Exception) {
+					currentUser.sessionID = 0
+					Log.emit("ClientMistake: sessionID cookie could not be converted to Long: '$sessionID'")
+				}
+				if (currentUser.sessionID != 0.toLong())
+					userMaster.recognize(dbConnection, currentUser)
+				if (debugUserRecognition)
+					Log.emit("Debug: user '$userName' got access: '${currentUser.access}'")
 			}
+			else
+				Log.emit("ClientMistake: user name cookie present but sessionID cookie not set")
 		}
 	}
 
-	fun recognizeUser(name: String, sessionID: String) {
+	fun proceedRecognizeUser() {
 	}
 
 	open fun actRespond() {
