@@ -50,7 +50,7 @@ class WebServer(val settings: WebServerSettings): Container {
 			if (logRequestProcessedEnabled)
 				Log.emit("HTTP Request '${request.getPath()}' processed, time spent: " + Period(respondStartMoment, DateTime()).toString())
 		} catch (e: Exception) {
-			e.printStackTrace()
+			Log.emit(e)
 		}
 	}
 

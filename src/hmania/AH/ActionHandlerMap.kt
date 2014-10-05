@@ -1,13 +1,18 @@
 package hmania.AH
 
 import java.util.HashMap
+import sun.plugin.com.JavaClass
 
 object ActionHandlerMap: HashMap<String, () -> ActionHandler>() {
+
+	val actionConstructors: Array<() -> ActionHandler>
 	{
-		put("", { Default() })
-		put("hd", { HttpDiagnostics() })
-		put("lp", { LoginPage() })
-		put("l", { Login() })
+		actionConstructors = array({Default()}, {HttpDiagnostics()},  {LoginPage()}, {Login()})
+		for (actionConstructor in actionConstructors) {
+			val action = actionConstructor()
+			this.put(action.actionName, actionConstructor)
+		}
 	}
+
 
 }

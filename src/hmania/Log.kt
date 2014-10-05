@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Level
 import java.util.HashMap
+import java.io.StringWriter
+import java.io.PrintWriter
 
 object Log {
 
@@ -66,6 +68,14 @@ object Log {
 		val logger = LogManager.getLogger(clazz) !!
 		val level = getLogLevel(text)
 		logger.log(level, text)
+	}
+
+	fun emit(e: Throwable): String {
+		val writer = StringWriter()
+		val printWriter = PrintWriter(writer)
+		e.printStackTrace(printWriter)
+		printWriter.close()
+		return writer.toString()
 	}
 
 }

@@ -13,21 +13,17 @@ import java.io.BufferedReader
 // has shutdown method
 class ContentMaster {
 
-	class object {
-
-		val contentSubDirectory = "content"
-		val dollarTemplateKey = "dollar"
-		val pageTemplateFileName = "pageTemplate.html"
-		val pageTitleTemplateKey = "pageTitle"
-		val pageBodyTemplateKey = "pageBody"
-		val pageTemplateLoginKey = "pageLogin"
-		val hmaniaColor = "#FFD699"
-		val hmaniaColorTemplateKey = "hmaniaColor"
-		val pageTitleSeparator = "$ pageTitle $"
-		val pageTemplateFilePrefix = "file."
-		val hmaniaWebDirectory = "hmania"
-
-	}
+	val contentSubDirectory = "content"
+	val dollarTemplateKey = "dollar"
+	val pageTemplateFileName = "pageTemplate.html"
+	val pageTitleTemplateKey = "pageTitle"
+	val pageBodyTemplateKey = "pageBody"
+	val pageTemplateLoginKey = "pageLogin"
+	val hmaniaColor = "#FFD699"
+	val hmaniaColorTemplateKey = "hmaniaColor"
+	val pageTitleSeparator = "$ pageTitle $"
+	val pageTemplateFilePrefix = "file."
+	val hmaniaWebDirectory = "hmania"
 
 	val classLoader = Thread.currentThread().getContextClassLoader()!!
 	val contentURI = classLoader.getResource(contentSubDirectory)!!.toURI()
@@ -107,7 +103,7 @@ class ContentMaster {
 	}
 
 	fun formPage(titleString: String, bodyString: String): String {
-		val pageTemplateString = loadString(ContentMaster.pageTemplateFileName)
+		val pageTemplateString = loadString(pageTemplateFileName)
 		val template = newReplacer()
 		template.add(pageTitleTemplateKey, titleString)
 		template.add(pageBodyTemplateKey, bodyString)

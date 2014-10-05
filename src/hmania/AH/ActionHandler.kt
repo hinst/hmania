@@ -15,6 +15,7 @@ open class ActionHandler: Closeable {
 		val debugUserRecognition = true;
 	}
 
+	open val actionName: String = ""
 	var action: String = ""
 	var fRequest: Request? = null
 	var request: Request
@@ -47,7 +48,6 @@ open class ActionHandler: Closeable {
 			fUserMaster = value
 		}
 	var currentUser: User = User()
-
 	var fDBConnection: Connection? = null
 	var dbConnection: Connection
 		get() {
@@ -91,15 +91,41 @@ open class ActionHandler: Closeable {
 		}
 	}
 
-	fun proceedRecognizeUser() {
+	open fun actRespond() {
 	}
 
-	open fun actRespond() {
+	fun getUserNameString(): String {
+		val name =
+			if (currentUser.sessionID != 0.toLong())
+				currentUser.name
+			else
+				return "Log in"
+		return name
+	}
+
+	fun getUserAccessString(): String {
+		val access =
+			if (currentUser.sessionID != 0.toLong())
+				currentUser.access.toText()
+			else
+				"Guest"
+		return access
+	}
+
+	fun getUserLinkString(): String {
+		val link = contentMaster.hmaniaWebDirectory + "?action=" +
+			if (currentUser.sessionID != 0.toLong())
+				"up"
+			else
+				"lp"
+		return link
 	}
 
 	fun newReplacer(): StringReplacer {
 		val replacer = contentMaster.newReplacer()
 		replacer.add("action", action)
+		replacer.add("currentUserName", getUserNameString())
+		replacer.add("currentUserAccess", getUserAccessString())
 		return replacer
 	}
 
@@ -118,4 +144,5 @@ open class ActionHandler: Closeable {
 			fDBConnection = null
 		}
 	}
+
 }

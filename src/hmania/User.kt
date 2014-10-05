@@ -33,6 +33,16 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 		No
 		User
 		Admin
+
+		fun toText(): String {
+			val text =
+				if (this == No)
+					"No access"
+				else
+					toString()
+			return text
+		}
+
 	}
 
 	/** Default value is "" */

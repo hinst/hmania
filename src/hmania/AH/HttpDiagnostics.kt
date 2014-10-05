@@ -5,6 +5,8 @@ import hmania.web.*
 
 class HttpDiagnostics: ActionHandler() {
 
+	override val actionName = "hd"
+
 	override fun actRespond() {
 		// response text string builder
 		val s = StringBuilder()

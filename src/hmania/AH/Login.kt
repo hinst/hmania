@@ -11,6 +11,8 @@ import hmania.UserMaster
 
 class Login: ActionHandler() {
 
+	override val actionName = "l"
+
 	var name: String = ""
 	var password: String = ""
 
