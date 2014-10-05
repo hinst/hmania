@@ -55,7 +55,7 @@ class WebServer(val settings: WebServerSettings): Container {
 	}
 
 	public fun startServer() {
-		Log.emit("Now starting HTTP server; port = ${settings.port}...")
+		Log.emit("Info: Now starting HTTP server; port = ${settings.port}...")
 		val address = InetSocketAddress(settings.port)
 		val connection = SocketConnection(server)
 		connection.connect(address)
