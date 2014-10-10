@@ -6,7 +6,7 @@ class CurrentUserPage: ActionHandler() {
 	override val actionName = "cup"
 
 	override fun actRespond() {
-		val content = contentMaster.loadString("currentUserPage")
+		val content = contentMaster.loadString("currentUserPage.html")
 		servePage(content)
 	}
 

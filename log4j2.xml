@@ -3,6 +3,11 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
+        <Socket name="LocalSocket" protocol="TCP" host="localhost" port="4445">
+        </Socket>
+        <Async name="AsyncNet" bufferSize="1000">
+            <AppenderRef ref="LocalSocket"/>
+        </Async>
     </Appenders>
     <Loggers>
         <Root level="trace">
