@@ -1,15 +1,32 @@
 <title>Current user</title>
-<style></style>
+<style>
+td.L {
+	text-align: right;
+}
+td.R {
+	text-align: left;
+}
+span.U {
+	border-bottom: 1.5pt $hmaniaColor$ solid;
+}
+</style>
 <div
 	style="
 		text-align: center
 	"
 >
 	<table align="center">
-	<tr><td>you are</td><td>$currentUserName$</td></tr>
-	<tr><td>your access is</td><td>$currentUserAccess$</td></tr>
+		<tr>
+			<td class="L">you are</td>
+			<td class="R"><span class="U">$currentUserName$</span></td>
+		</tr>
+		<tr>
+			<td class="L">your access is</td>
+			<td class="R"><span class="U">$currentUserAccess$</span></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><a href="$hmania$?action=logout">log out</a><br></td>
+		</tr>
 	</table>
-	<br>
-	you can:<br>
-	<a href="$hmania$?action=logout">log out</a><br>
 </div>
