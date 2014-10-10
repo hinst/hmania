@@ -1,11 +1,15 @@
-Current user
-$ pageTitle $
+<title>Current user</title>
+<style></style>
 <div
 	style="
 		text-align: center
 	"
 >
-	you: $currentUserName$
-	your access is: $currentUserAccess$
-	<a href="$hmania$?action=logout">log out</a>
+	<table>
+	<tr><td>you are</td><td>$currentUserName$</td></tr>
+	<tr><td>your access is</td><td>$currentUserAccess$</td></tr>
+	</table>
+	<br>
+	you can:<br>
+	<a href="$hmania$?action=logout">log out</a><br>
 </div>

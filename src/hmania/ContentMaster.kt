@@ -9,6 +9,7 @@ import java.util.HashMap
 import java.net.URI
 import java.util.ArrayList
 import java.io.BufferedReader
+import hmania.web.PageTemplater
 
 // has shutdown method
 class ContentMaster {
@@ -91,25 +92,13 @@ class ContentMaster {
 		return resolvedString
 	}
 
-	fun formPage(string: String): String {
-		val pageTitlePosition = string.indexOf(pageTitleSeparator)
-		if (pageTitlePosition >= 0) {
-			val title = string.substring(0, pageTitlePosition).trim()
-			val body = string.substring(pageTitlePosition + pageTitleSeparator.length, string.length)
-			return formPage(title, body)
-		}
-		else {
-			return formPage("", string)
-		}
-	}
-
-	fun formPage(titleString: String, bodyString: String): String {
-		val pageTemplateString = loadString(pageTemplateFileName)
-		val template = newReplacer()
-		template.add(pageTitleTemplateKey, titleString)
-		template.add(pageBodyTemplateKey, bodyString)
-		val fullPage = template.replace(pageTemplateString)
-		return fullPage
+	fun formPage(content: String): String {
+		val templater =
+			PageTemplater(
+				template = loadString(pageTemplateFileName),
+				content = content
+			)
+		return templater.gen()
 	}
 
 	fun shutdown() {
