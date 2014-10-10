@@ -4,8 +4,6 @@ import org.simpleframework.http.*
 import hmania.*
 import hmania.web.*
 import java.util.HashMap
-import hmania.Log
-import hmania.web.ContentTypes
 import java.sql.Connection
 import java.io.Closeable
 
@@ -94,38 +92,39 @@ open class ActionHandler: Closeable {
 	open fun actRespond() {
 	}
 
-	fun getUserNameString(): String {
+	fun genUserNameDisplayText(): String {
 		val name =
 			if (currentUser.sessionID != 0.toLong())
 				currentUser.name
 			else
-				return "Log in"
+				return "log in"
 		return name
 	}
 
-	fun getUserAccessString(): String {
+	fun genUserAccessDisplayText(): String {
 		val access =
 			if (currentUser.sessionID != 0.toLong())
-				currentUser.access.toText()
+				currentUser.access.toText().toLowerCase()
 			else
-				"Guest"
+				"guest"
 		return access
 	}
 
-	fun getUserLinkString(): String {
+	fun genUserButtonHyperLink(): String {
 		val link = contentMaster.hmaniaWebDirectory + "?action=" +
 			if (currentUser.sessionID != 0.toLong())
-				"up"
+				AH.CurrentUserPage().actionName
 			else
-				"lp"
+				AH.LoginPage().actionName
 		return link
 	}
 
 	fun newReplacer(): StringReplacer {
 		val replacer = contentMaster.newReplacer()
-		replacer.add("action", action)
-		replacer.add("currentUserName", getUserNameString())
-		replacer.add("currentUserAccess", getUserAccessString())
+		replacer.add("\$action$", action)
+		replacer.add("\$currentUserName$", genUserNameDisplayText())
+		replacer.add("\$currentUserAccess$", genUserAccessDisplayText())
+		replacer.add("\$userButtonLink$", genUserButtonHyperLink())
 		return replacer
 	}
 
@@ -134,8 +133,12 @@ open class ActionHandler: Closeable {
 	}
 
 	fun servePage(page: String) {
-		val responseString = replace(contentMaster.formPage(page))
-		response.respondUTF_8(responseString, ContentTypes.htmlTextUTF_8)
+		val responseString = replace(
+			contentMaster.formPage(
+				page
+			)
+		)
+		response.respond(responseString, ContentTypes.htmlText)
 	}
 
 	override fun close() {

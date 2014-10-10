@@ -18,8 +18,7 @@ class StringReplacer {
 	val map: HashMap<String, Any> = HashMap()
 
 	fun add(key: String, value: Any) {
-		val lKey = templateStart + key + templateEnd
-		map.put(lKey, value)
+		map.put(key, value)
 	}
 
 	fun replace(s: String): String {

@@ -7,12 +7,17 @@ object ActionHandlerMap: HashMap<String, () -> ActionHandler>() {
 
 	val actionConstructors: Array<() -> ActionHandler>
 	{
-		actionConstructors = array({Default()}, {HttpDiagnostics()},  {LoginPage()}, {Login()})
+		actionConstructors = array(
+			{Default()},
+			{HttpDiagnostics()},
+			{LoginPage()},
+			{Login()},
+			{CurrentUserPage()}
+		)
 		for (actionConstructor in actionConstructors) {
 			val action = actionConstructor()
 			this.put(action.actionName, actionConstructor)
 		}
 	}
-
 
 }

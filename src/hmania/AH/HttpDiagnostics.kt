@@ -13,7 +13,7 @@ class HttpDiagnostics: ActionHandler() {
 		s.appendln("HTTP diagnostics page")
 		s.appendln("Address: '${request.getAddress()}'")
 		s.appendln("Query fields: " + mapToDebugText(request.getQuery()))
-		response.respondUTF_8(s.toString(), ContentTypes.plainText)
+		response.respond(s.toString(), ContentTypes.plainText)
 	}
 
 }

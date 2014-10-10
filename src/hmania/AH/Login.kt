@@ -36,9 +36,9 @@ class Login: ActionHandler() {
 
 	fun respond2(loginAttemptResultText: String) {
 		val replacer = newReplacer()
-		replacer.add("loginAttemptResult", loginAttemptResultText)
-		replacer.add("loginAttemptUser", name)
-		replacer.add("loginAttemptPassword", getAsterisks(password))
+		replacer.add("\$loginAttemptResult$", loginAttemptResultText)
+		replacer.add("\$loginAttemptUser$", name)
+		replacer.add("\$loginAttemptPassword$", getAsterisks(password))
 		val page =
 			replacer.replace(
 				contentMaster.loadString("loginResult.html")

@@ -16,9 +16,9 @@ fun HttpExchange.respond(data: ByteArray) {
 	stream.close()
 }
 
-fun HttpExchange.respond(text: String) {
+fun HttpExchange.respondUTF_8(text: String) {
 	this.getResponseHeaders()!!.set(ContentTypes.httpHeaderKey, ContentTypes.plainTextUTF_8)
-	this.respond(text.getBytesUTF_8())
+	this.respond(text.getBytes(StandardCharsets.UTF_8))
 }
 
 fun getURLQueryArguments(query: String): Map<String, String> {
@@ -64,14 +64,6 @@ fun HttpExchange.getRequestFields(): Map<String, String> {
 		}
 	}
 	return result
-}
-
-fun String.getBytesUTF_8(): ByteArray {
-	return this.getBytes(StandardCharsets.UTF_8)
-}
-
-fun String.getBytesUTF_16(): ByteArray {
-	return this.getBytes(StandardCharsets.UTF_16BE)
 }
 
 fun getAsterisks(password: String): String {
