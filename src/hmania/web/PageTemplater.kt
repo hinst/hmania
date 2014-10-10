@@ -1,6 +1,7 @@
 package hmania.web
 
 import hmania.StringReplacer
+import hmania.Log
 
 class PageTemplater(val template: String, var content: String) {
 
@@ -10,6 +11,7 @@ class PageTemplater(val template: String, var content: String) {
 		val replacer = StringReplacer()
 		replacer.add("\$title$", title)
 		replacer.add("\$style$", style)
+		replacer.add("\$body$", content)
 		val composedText = replacer.replace(template)
 		return composedText
 	}
@@ -28,7 +30,7 @@ class PageTemplater(val template: String, var content: String) {
 	}
 
 	fun tagExtract(tag: String): String {
-		return extract("<" + tag + ">", "<" + tag + "/>")
+		return extract("<" + tag + ">", "</" + tag + ">")
 	}
 
 }
