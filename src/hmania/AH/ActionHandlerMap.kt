@@ -8,11 +8,21 @@ object ActionHandlerMap: HashMap<String, () -> ActionHandler>() {
 	val actionConstructors: Array<() -> ActionHandler>
 	{
 		actionConstructors = array(
-			{Default()},
-			{HttpDiagnostics()},
-			{LoginPage()},
-			{Login()},
-			{CurrentUserPage()}
+			{ // function
+				Default()
+			},
+			{
+				HttpDiagnostics()
+			},
+			{
+				LoginPage()
+			},
+			{
+				Login()
+			},
+			{
+				CurrentUserPage()
+			}
 		)
 		for (actionConstructor in actionConstructors) {
 			val action = actionConstructor()
