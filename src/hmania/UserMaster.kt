@@ -19,11 +19,6 @@ class UserMaster(val dataMaster: DataMaster) {
 		val loadUsersStatement = "SELECT * from ${usersTableName};"
 		val defaultAdminSettingsFilePath = "admin.settings.json"
 
-		object CookieKey {
-			val sessionID = "hmania_sessionID"
-			val userName = "hmania_userName"
-		}
-
 	}
 
 	fun ensureUsersTable() {
@@ -91,20 +86,28 @@ class UserMaster(val dataMaster: DataMaster) {
 		if (legit) {
 			user.access = recordedUser.access
 			user.sessionID = PasswordSalt.generateSessionID()
-		}
-		else {
+		} else {
 			user.sessionID = 0
 		}
 	}
 
-	/** Takes user.name & user.sessionID -> assigns user.access */
+	// Does NOT check if user authorized to log out
+	// Proceeds to erase stored session id of specified user immediately
+	// Modifies user instance
+	fun logOut(connection: Connection, user: User) {
+		user.sessionID = 0
+		updateSession(connection, user)
+	}
+
+	// Takes user.name & user.sessionID, assigns user.access
 	fun recognize(connection: Connection, user: User) {
 		user.access = User.Access.No
 		if (user.sessionID != 0.toLong()) {
 			val recordedUser = loadUserByName(connection, user.name)
 			if (recordedUser != null)
-				if (recordedUser.sessionID == user.sessionID)
+				if (recordedUser.sessionID == user.sessionID) {
 					user.access = recordedUser.access
+				}
 		}
 	}
 

@@ -45,7 +45,7 @@ open class ActionHandler: Closeable {
 		set(value) {
 			fUserMaster = value
 		}
-	var currentUser: User = User()
+	val currentUser: User = User()
 	var fDBConnection: Connection? = null
 	var dbConnection: Connection
 		get() {
@@ -67,9 +67,9 @@ open class ActionHandler: Closeable {
 	}
 
 	fun recognizeUser() {
-		val userName = request.getCookie(UserMaster.CookieKey.userName)?.getValue()
+		val userName = request.getCookie(Cookies.userName)?.getValue()
 		if (userName != null) {
-			val sessionID = request.getCookie(UserMaster.CookieKey.sessionID)?.getValue()
+			val sessionID = request.getCookie(Cookies.sessionID)?.getValue()
 			if (sessionID != null) {
 				currentUser.name = userName
 				try {
@@ -139,6 +139,10 @@ open class ActionHandler: Closeable {
 			)
 		)
 		response.respond(responseString, ContentTypes.htmlText)
+	}
+
+	fun serveAccessDeniedPage() {
+		servePage(contentMaster.loadString(contentMaster.accessDeniedFileName))
 	}
 
 	override fun close() {

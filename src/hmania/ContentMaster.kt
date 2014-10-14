@@ -17,6 +17,7 @@ class ContentMaster {
 	val contentSubDirectory = "content"
 	val dollarTemplateKey = "dollar"
 	val pageTemplateFileName = "pageTemplate.html"
+	val accessDeniedFileName = "accessDenied.html"
 	val pageTitleTemplateKey = "\$pageTitle$"
 	val pageBodyTemplateKey = "\$pageBody$"
 	val pageTemplateLoginKey = "pageLogin"

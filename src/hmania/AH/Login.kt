@@ -1,15 +1,9 @@
 package hmania.AH
 
-import hmania.web.getArguments
-import hmania.Log
-import hmania.mapToDebugText
-import hmania.User
-import hmania.web.respond
-import hmania.web.ContentTypes
-import hmania.web.getAsterisks
-import hmania.UserMaster
+import hmania.*
+import hmania.web.*
 
-class Login: ActionHandler() {
+class Login : ActionHandler() {
 
 	override val actionName = "l"
 
@@ -22,13 +16,11 @@ class Login: ActionHandler() {
 		if ("" != name) {
 			if ("" != password) {
 				logIn()
-			}
-			else {
+			} else {
 				Log.emit("ClientMistake: password request field not specified")
 				respond2("password request field not set")
 			}
-		}
-		else {
+		} else {
 			Log.emit("ClientMistake: name request field not specified")
 			respond2("name request field not set")
 		}
@@ -52,8 +44,8 @@ class Login: ActionHandler() {
 		user.password = password
 		userMaster.logIn(dbConnection, user)
 		if (user.access != User.Access.No) {
-			response.setCookie(UserMaster.CookieKey.userName, user.name)
-			response.setCookie(UserMaster.CookieKey.sessionID, user.sessionID.toString())
+			response.setCookie(Cookies.userName, user.name)
+			response.setCookie(Cookies.sessionID, user.sessionID.toString())
 		}
 		respond2("your access is " + user.access)
 	}

@@ -22,6 +22,9 @@ object ActionHandlerMap: HashMap<String, () -> ActionHandler>() {
 			},
 			{
 				CurrentUserPage()
+			},
+			{
+				Logout()
 			}
 		)
 		for (actionConstructor in actionConstructors) {

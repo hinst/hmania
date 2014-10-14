@@ -43,6 +43,10 @@ class User(): LoadableDataBaseRow, InsertableDataBaseRow, LoadableJSON {
 			return text
 		}
 
+		fun checkIfAtLeastUser(): Boolean {
+			return this == User || this == Admin
+		}
+
 	}
 
 	/** Default value is "" */
